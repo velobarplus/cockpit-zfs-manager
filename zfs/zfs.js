@@ -1,20 +1,20 @@
 /*
- * This file is part of Cockpit ZFS Manager.
+ * This file is part of ZFS manager.
  *
  * Copyright (C) 2019-2020 OPTIMANS Pty Ltd.
  *
- * Cockpit ZFS Manager is free software; you can redistribute it and/or modify it
+ * ZFS manager is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation; either version 3 of the License, or (at your option)
  * any later version.
  *
- * Cockpit ZFS Manager is distributed in the hope that it will be useful, but
+ * ZFS manager is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
  * more details.
  *
  * You should have received a copy of the GNU Lesser General Public License along
- * with Cockpit ZFS Manager; If not, see <http://www.gnu.org/licenses/>.
+ * with ZFS manager; If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -94,7 +94,7 @@ let zfsmanager = {
 $(document).ready(function () {
     FnConsoleInitialize();
 
-    FnConsole.log[1]("Cockpit ZFS Manager, Version: " + zfsmanager.version);
+    FnConsole.log[1]("ZFS manager, Version: " + zfsmanager.version);
 
     FnConfigurationGet()
         .always(function () {
@@ -575,15 +575,15 @@ function FnConsoleVerbose(process = { data, message }) {
 
 //#endregion
 
-//#region Cockpit ZFS Manager
+//#region ZFS manager
 
 function FnConfigurationGet() {
-    FnConsole.log[2]("Cockpit ZFS Manager, Configuration, Get: In Progress");
+    FnConsole.log[2]("ZFS manager, Configuration, Get: In Progress");
     FnConsole.log[3](FnConsoleCommand({ command: [`cockpit.file("/etc/cockpit/zfs/config.json").read()`] }));
 
     return cockpit.file("/etc/cockpit/zfs/config.json").read()
         .done(function (user) {
-            FnConsole.log[4](FnConsoleVerbose({ data: user, message: "Cockpit ZFS Manager, Configuration, Get:" }));
+            FnConsole.log[4](FnConsoleVerbose({ data: user, message: "ZFS manager, Configuration, Get:" }));
 
             try {
                 user = JSON.parse(user, (key, value) => {
@@ -629,25 +629,25 @@ function FnConfigurationGet() {
                 zfsmanager.configuration = user;
                 zfsmanager.user.configuration = true;
 
-                FnConsole.log[1]("Cockpit ZFS Manager, Configuration, Get: Success");
+                FnConsole.log[1]("ZFS manager, Configuration, Get: Success");
 
                 FnConsoleInitialize();
             }
             catch (error) {
-                FnConsole.warn("Cockpit ZFS Manager, Configuration, Get: Failed, Message: Configuration does not exist. Using defaults.");
+                FnConsole.warn("ZFS manager, Configuration, Get: Failed, Message: Configuration does not exist. Using defaults.");
             };
         })
         .fail(function (message) {
-            FnConsole.warn("Cockpit ZFS Manager, Configuration, Get: Failed, Message: Configuration does not exist. Using defaults.");
+            FnConsole.warn("ZFS manager, Configuration, Get: Failed, Message: Configuration does not exist. Using defaults.");
         });
 };
 
 function FnConfigure(user = { cockpit: { manage: true }, disks: { base2: false }, loglevel: 1, samba: { manage: true, windowscompatibility: true }, updates: { check: true }, zfs: { filesystem: { cloneorigin: false, quotarestrict: true, readonlylockdown: true, snapshotactions: true }, snapshot: { filesystemlist: true }, status: { errorcolors: true, trimunsupported: false }, storagepool: { activetab: 1, boot: true, bootlockdown: true, count: true, refreshall: false, root: true } } }, modal = { name, welcome: false }) {
     let process = {
-        command: ["/bin/sh", "-c", "echo '" + JSON.stringify(user, null, "  ").replace(/^\{\n/, `{\n  "#1": "COCKPIT ZFS MANAGER",\n  "#2": "WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION",\n`) + "' > /etc/cockpit/zfs/config.json"]
+        command: ["/bin/sh", "-c", "echo '" + JSON.stringify(user, null, "  ").replace(/^\{\n/, `{\n  "#1": "ZFS manager",\n  "#2": "WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION",\n`) + "' > /etc/cockpit/zfs/config.json"]
     };
 
-    FnConsole.log[2]("Cockpit ZFS Manager, Configure: In Progress");
+    FnConsole.log[2]("ZFS manager, Configure: In Progress");
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
     $("#spinner-" + modal.name + " span").text("Saving configuration...");
@@ -656,12 +656,12 @@ function FnConfigure(user = { cockpit: { manage: true }, disks: { base2: false }
         .done(function (data) {
             FnDisplayAlert({ status: "success", title: "Configuration successfully updated", description: null, breakword: false }, { name: modal.name, id: null, timeout: 4 });
 
-            FnConsole.log[1]("Cockpit ZFS Manager, Configure: Success");
+            FnConsole.log[1]("ZFS manager, Configure: Success");
         })
         .fail(function (message, data) {
             FnDisplayAlert({ status: "danger", title: "Configuration could not be updated", description: null, breakword: false }, { name: modal.name, id: null, timeout: 4 });
 
-            FnConsole.warn("Cockpit ZFS Manager, Configure: Failed, Message: " + (data ? data : message));
+            FnConsole.warn("ZFS manager, Configure: Failed, Message: " + (data ? data : message));
         })
         .finally(function () {
             if ((modal.welcome || !modal.welcome && zfsmanager.configuration.samba.manage) && !user.samba.manage) {
@@ -681,7 +681,7 @@ function FnConfigure(user = { cockpit: { manage: true }, disks: { base2: false }
 }
 
 function FnConfigureFinally(modal = { name, welcome: false }) {
-    $("#spinner-" + modal.name + " span").text("Reloading Cockpit ZFS Manager...");
+    $("#spinner-" + modal.name + " span").text("Reloading ZFS manager...");
 
     setTimeout(function () {
         location.reload(true);
@@ -693,21 +693,21 @@ function FnConfigurationDirectoryCreate() {
         command: ["/bin/sh", "-c", `[ ! -d /etc/cockpit/zfs ] || [ ! -d /etc/cockpit/zfs/shares ] || [ ! -d /etc/cockpit/zfs/snapshots ] && /bin/mkdir -p /etc/cockpit/zfs/shares /etc/cockpit/zfs/snapshots || printf "Skipped"`]
     };
 
-    FnConsole.log[2]("Cockpit ZFS Manager, Configuration Directory, Create: In Progress");
+    FnConsole.log[2]("ZFS manager, Configuration Directory, Create: In Progress");
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function (data) {
-            FnConsole.log[4](FnConsoleVerbose({ data: data, message: "Cockpit ZFS Manager, Configuration Directory, Create:" }));
+            FnConsole.log[4](FnConsoleVerbose({ data: data, message: "ZFS manager, Configuration Directory, Create:" }));
 
             if (data == "Skipped") {
-                FnConsole.log[2]("Cockpit ZFS Manager, Configuration Directory, Create: Skipped");
+                FnConsole.log[2]("ZFS manager, Configuration Directory, Create: Skipped");
             } else {
-                FnConsole.log[1]("Cockpit ZFS Manager, Configuration Directory, Create: Success");
+                FnConsole.log[1]("ZFS manager, Configuration Directory, Create: Success");
             }
         })
         .fail(function (message, data) {
-            FnConsole.warn("Cockpit ZFS Manager, Configuration Directory, Create: Failed, Message: " + (data ? data : message));
+            FnConsole.warn("ZFS manager, Configuration Directory, Create: Failed, Message: " + (data ? data : message));
         });
 }
 
@@ -716,21 +716,21 @@ function FnConfigurationDirectoryRuntimeCreate() {
         command: ["/bin/sh", "-c", `[ ! -d /run/cockpit/zfs/shares ] && /bin/mkdir -p /run/cockpit/zfs/shares || printf "Skipped"`]
     };
 
-    FnConsole.log[2]("Cockpit ZFS Manager, Runtime Configuration Directory, Create: In Progress");
+    FnConsole.log[2]("ZFS manager, Runtime Configuration Directory, Create: In Progress");
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function (data) {
-            FnConsole.log[4](FnConsoleVerbose({ data: data, message: "Cockpit ZFS Manager, Runtime Configuration Directory, Create:" }));
+            FnConsole.log[4](FnConsoleVerbose({ data: data, message: "ZFS manager, Runtime Configuration Directory, Create:" }));
 
             if (data == "Skipped") {
-                FnConsole.log[2]("Cockpit ZFS Manager, Runtime Configuration Directory, Create: Skipped");
+                FnConsole.log[2]("ZFS manager, Runtime Configuration Directory, Create: Skipped");
             } else {
-                FnConsole.log[1]("Cockpit ZFS Manager, Runtime Configuration Directory, Create: Success");
+                FnConsole.log[1]("ZFS manager, Runtime Configuration Directory, Create: Success");
             }
         })
         .fail(function (message, data) {
-            FnConsole.warn("Cockpit ZFS Manager, Runtime Configuration Directory, Create: Failed, Message: " + (data ? data : message));
+            FnConsole.warn("ZFS manager, Runtime Configuration Directory, Create: Failed, Message: " + (data ? data : message));
         });
 }
 
@@ -749,15 +749,15 @@ function FnConfigurationLegacyGet() {
 
             process.command.push(`[ -e '` + path + `/config.json' ] && printf "true" || printf "false"`);
 
-            FnConsole.log[2]("Cockpit ZFS Manager, Configuration, Legacy, Get: In Progress");
+            FnConsole.log[2]("ZFS manager, Configuration, Legacy, Get: In Progress");
             FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
             cockpit.spawn(process.command, { err: "out" })
                 .done(function (_data) {
-                    FnConsole.log[4](FnConsoleVerbose({ data: _data, message: "Cockpit ZFS Manager, Configuration, Legacy, Get:" }));
+                    FnConsole.log[4](FnConsoleVerbose({ data: _data, message: "ZFS manager, Configuration, Legacy, Get:" }));
 
                     if (_data == "true") {
-                        FnConsole.log[1]("Cockpit ZFS Manager, Configuration, Legacy, Get: Success");
+                        FnConsole.log[1]("ZFS manager, Configuration, Legacy, Get: Success");
 
                         FnModalUpdateContent({ id: $("#modal-update") });
 
@@ -766,7 +766,7 @@ function FnConfigurationLegacyGet() {
 
                         FnConfigurationLegacyRelocate({ path: path })
                             .done(function () {
-                                $("#spinner-update span").text("Reloading Cockpit ZFS Manager...");
+                                $("#spinner-update span").text("Reloading ZFS manager...");
 
                                 setTimeout(function () {
                                     location.reload(true);
@@ -779,7 +779,7 @@ function FnConfigurationLegacyGet() {
                                 $("#modal-welcome").modal("show");
                             });
                     } else {
-                        FnConsole.log[2]("Cockpit ZFS Manager, Configuration, Legacy, Get: " + (_data == "false" ? "Skipped" : "Failed"));
+                        FnConsole.log[2]("ZFS manager, Configuration, Legacy, Get: " + (_data == "false" ? "Skipped" : "Failed"));
 
                         FnModalWelcomeContent({ id: $("#modal-welcome") });
 
@@ -787,7 +787,7 @@ function FnConfigurationLegacyGet() {
                     }
                 })
                 .fail(function (_message, _data) {
-                    FnConsole.warn("Cockpit ZFS Manager, Configuration, Legacy, Get: Failed, Message: " + (_data ? _data : _message));
+                    FnConsole.warn("ZFS manager, Configuration, Legacy, Get: Failed, Message: " + (_data ? _data : _message));
 
                     FnModalWelcomeContent({ id: $("#modal-welcome") });
 
@@ -806,22 +806,22 @@ function FnConfigurationLegacyRelocate(legacy = { path }) {
         command: ["/bin/sh", "-c", `/bin/mv -f ` + legacy.path + `/config.json /etc/cockpit/zfs/config.json`]
     };
 
-    FnConsole.log[2]("Cockpit ZFS Manager, Configuration, Legacy, Relocate: In Progress");
+    FnConsole.log[2]("ZFS manager, Configuration, Legacy, Relocate: In Progress");
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function (data) {
-            FnConsole.log[4](FnConsoleVerbose({ data: data, message: "Cockpit ZFS Manager, Configuration, Legacy, Relocate:" }));
+            FnConsole.log[4](FnConsoleVerbose({ data: data, message: "ZFS manager, Configuration, Legacy, Relocate:" }));
 
-            FnConsole.log[1]("Cockpit ZFS Manager, Configuration, Legacy, Relocate: Success");
+            FnConsole.log[1]("ZFS manager, Configuration, Legacy, Relocate: Success");
         })
         .fail(function (message, data) {
-            FnConsole.warn("Cockpit ZFS Manager, Configuration, Legacy, Relocate: Failed, Message: " + (data ? data : message));
+            FnConsole.warn("ZFS manager, Configuration, Legacy, Relocate: Failed, Message: " + (data ? data : message));
         });
 }
 
 function FnUpdatesCheck(display = { alert: true }) {
-    FnConsole.log[2]("Cockpit ZFS Manager, Updates, Check: In Progress");
+    FnConsole.log[2]("ZFS manager, Updates, Check: In Progress");
 
     $.ajax({ url: "https://api.github.com/repos/optimans/cockpit-zfs-manager/releases", dataType: "json", cache: false })
         .done(function (data) {
@@ -832,18 +832,18 @@ function FnUpdatesCheck(display = { alert: true }) {
                         $("#span-about-update-version").html(`<a href="` + data[0].html_url + `" target="_blank">` + data[0].name + ` ` + (data[0].prerelease === true ? `(Pre-release)` : `(Release)`) + `</a>`);
 
                         if (display.alert) {
-                            FnDisplayAlert({ status: "info", title: "A new version of Cockpit ZFS Manager is now available", description: ` <a href="` + data[0].html_url + `" target="_blank">` + data[0].name + ` ` + (data[0].prerelease === true ? `(Pre-release)` : `(Release)`) + `</a>`, breakword: true }, { name: "update", id: null, timeout: 30 });
+                            FnDisplayAlert({ status: "info", title: "A new version of ZFS manager is now available", description: ` <a href="` + data[0].html_url + `" target="_blank">` + data[0].name + ` ` + (data[0].prerelease === true ? `(Pre-release)` : `(Release)`) + `</a>`, breakword: true }, { name: "update", id: null, timeout: 30 });
                         }
                     }, 500);
                 }
 
-                FnConsole.log[2]("Cockpit ZFS Manager, Updates, Check: Success");
+                FnConsole.log[2]("ZFS manager, Updates, Check: Success");
             } else {
-                FnConsole.warn("Cockpit ZFS Manager, Updates, Check: Failed, Message: Unable to retrieve release information.");
+                FnConsole.warn("ZFS manager, Updates, Check: Failed, Message: Unable to retrieve release information.");
             }
         })
         .fail(function (message) {
-            FnConsole.warn("Cockpit ZFS Manager, Updates, Check: Failed, Message: " + message);
+            FnConsole.warn("ZFS manager, Updates, Check: Failed, Message: " + message);
         });
 }
 
@@ -870,7 +870,7 @@ function FnUpdatesVersionCompare(version = { installed, latest }) {
 
 function FnVersionWarning() {
     if (/alpha|beta|dev|internal|pre|rc/gi.test(zfsmanager.version)) {
-        FnDisplayAlert({ status: "warning", title: "Pre-release version of Cockpit ZFS Manager is installed", description: zfsmanager.version + ` is an unstable build and features may not work as intended`, breakword: true }, { name: "version-warning", id: null, timeout: 60 });
+        FnDisplayAlert({ status: "warning", title: "Pre-release version of ZFS manager is installed", description: zfsmanager.version + ` is an unstable build and features may not work as intended`, breakword: true }, { name: "version-warning", id: null, timeout: 60 });
     }
 }
 
@@ -931,19 +931,19 @@ function FnCockpitPackagePathGet(package = { sosreport: false }) {
         command: ["/bin/sh", "-c", `cockpit-bridge --packages | /bin/grep -m1 '/cockpit/` + (package.sosreport ? `sosreport` : `zfs`) + `$' || printf "false"`] //printf fix for Debian
     };
 
-    FnConsole.log[2]("Cockpit, " + (package.sosreport ? "SOS Report" : "Cockpit ZFS Manager") + " Package Path, Get: In Progress");
+    FnConsole.log[2]("BlackHole, " + (package.sosreport ? "SOS Report" : "ZFS manager") + " Package Path, Get: In Progress");
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
     return cockpit.spawn(process.command, { err: "out" })
         .done(function (data) {
-            FnConsole.log[4](FnConsoleVerbose({ data: data, message: "Cockpit, " + (package.sosreport ? "SOS Report" : "Cockpit ZFS Manager") + " Package Path, Get:" }));
+            FnConsole.log[4](FnConsoleVerbose({ data: data, message: "BlackHole, " + (package.sosreport ? "SOS Report" : "ZFS manager") + " Package Path, Get:" }));
 
             let path = data.replace(/\s +/g, "\u22C5").replace(/\/$/, "").replace(/\n/, "").split("\u22C5")[2];
 
-            FnConsole.log[1]("Cockpit, " + (package.sosreport ? "SOS Report" : "Cockpit ZFS Manager") + " Package Path, Get: " + (path ? "Success" : "Failed"));
+            FnConsole.log[1]("BlackHole, " + (package.sosreport ? "SOS Report" : "ZFS manager") + " Package Path, Get: " + (path ? "Success" : "Failed"));
         })
         .fail(function (message, data) {
-            FnConsole.warn("Cockpit, " + (package.sosreport ? "SOS Report" : "Cockpit ZFS Manager") + " Package Path, Get: Failed, Message: " + (data ? data : message));
+            FnConsole.warn("BlackHole, " + (package.sosreport ? "SOS Report" : "ZFS manager") + " Package Path, Get: Failed, Message: " + (data ? data : message));
         });
 }
 
@@ -962,27 +962,27 @@ function FnCockpitPackageSosReportDelete() {
 
             process.command.push(`[ -e '` + path + `' ] && /bin/rm -rf ` + path + ` || printf "Skipped"`);
 
-            FnConsole.log[2]("Cockpit, Package, SOS Report, Delete: In Progress");
+            FnConsole.log[2]("BlackHole, Package, SOS Report, Delete: In Progress");
             FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
             cockpit.spawn(process.command, { err: "out", superuser: "require" })
                 .done(function (_data) {
-                    FnConsole.log[4](FnConsoleVerbose({ data: _data, message: "Cockpit, Package, SOS Report, Delete:" }));
+                    FnConsole.log[4](FnConsoleVerbose({ data: _data, message: "BlackHole, Package, SOS Report, Delete:" }));
 
                     if (_data == "Skipped") {
-                        FnConsole.log[2]("Cockpit, Package, SOS Report, Delete: Skipped");
+                        FnConsole.log[2]("BlackHole, Package, SOS Report, Delete: Skipped");
                     } else {
-                        FnConsole.log[1]("Cockpit, Package, SOS Report, Delete: Success");
+                        FnConsole.log[1]("BlackHole, Package, SOS Report, Delete: Success");
                     }
                 })
                 .fail(function (_message, _data) {
-                    FnConsole.warn("Cockpit, Package, SOS Report, Delete: Failed, Message: " + (_data ? _data : _message));
+                    FnConsole.warn("BlackHole, Package, SOS Report, Delete: Failed, Message: " + (_data ? _data : _message));
                 });
         });
 }
 
 function FnCockpitPermissionsGet() {
-    FnConsole.log[2]("Cockpit, Permissions, Get: In Progress");
+    FnConsole.log[2]("BlackHole, Permissions, Get: In Progress");
 
     zfsmanager.cockpit.permission = cockpit.permission({ admin: true });
 
@@ -991,11 +991,11 @@ function FnCockpitPermissionsGet() {
         zfsmanager.user.name = (zfsmanager.cockpit.permission.user ? zfsmanager.cockpit.permission.user.name : "");
 
         if (zfsmanager.user.admin) {
-            FnConsole.log[2]("Cockpit, Permissions, Get: Success");
+            FnConsole.log[2]("BlackHole, Permissions, Get: Success");
 
             FnFirstStepsPrivileged();
         } else {
-            FnConsole.warn("Cockpit, Permissions, Get: Warning, Message: " + zfsmanager.user.name + " does not have administrator permissions");
+            FnConsole.warn("BlackHole, Permissions, Get: Warning, Message: " + zfsmanager.user.name + " does not have administrator permissions");
 
             FnCockpitElementsDisable();
         }
@@ -11457,7 +11457,7 @@ function FnSambaConfigurationReload() {
 
 function FnSambaConfigurationZfsSharesEnable() {
     let process = {
-        command: ["/bin/sh", "-c", `[ -s /etc/samba/smb.conf ] && /usr/bin/awk -v k='\n\t# COCKPIT ZFS MANAGER\n\t# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION\n\tinclude = /etc/cockpit/zfs/shares.conf\n\tinclude = /run/cockpit/zfs/shares.conf\n' '($1=="[global]"||x&&/^\\[/)&&!(x=!x){print k} END{if(x)print k}1' /etc/samba/smb.conf > /etc/samba/smb.tmp && /bin/mv -f /etc/samba/smb.tmp /etc/samba/smb.conf \|\| { echo '/etc/samba/smb.conf file does not exist or is empty.' ; exit 1; }`]
+        command: ["/bin/sh", "-c", `[ -s /etc/samba/smb.conf ] && /usr/bin/awk -v k='\n\t# ZFS manager\n\t# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION\n\tinclude = /etc/cockpit/zfs/shares.conf\n\tinclude = /run/cockpit/zfs/shares.conf\n' '($1=="[global]"||x&&/^\\[/)&&!(x=!x){print k} END{if(x)print k}1' /etc/samba/smb.conf > /etc/samba/smb.tmp && /bin/mv -f /etc/samba/smb.tmp /etc/samba/smb.conf \|\| { echo '/etc/samba/smb.conf file does not exist or is empty.' ; exit 1; }`]
     };
 
     FnConsole.log[2]("Samba, Configuration, ZFS Shares, Enable: In Progress");
@@ -11931,7 +11931,7 @@ function FnSambaSharesDestroy(pool = { name, id, altroot: false, readonly: false
 
 function FnSambaSharesDestroyAll(samba = { restart: false }, display = { silent: false }, modal = { name }) {
     let process = {
-        command: ["/bin/sh", "-c", "echo '# COCKPIT ZFS MANAGER\n# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION' > /etc/cockpit/zfs/shares.conf && echo '# COCKPIT ZFS MANAGER\n# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION' > /run/cockpit/zfs/shares.conf && /bin/rm -rf /etc/cockpit/zfs/shares/*.conf && /bin/rm -rf /run/cockpit/zfs/shares/*.conf"],
+        command: ["/bin/sh", "-c", "echo '# ZFS manager\n# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION' > /etc/cockpit/zfs/shares.conf && echo '# ZFS manager\n# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION' > /run/cockpit/zfs/shares.conf && /bin/rm -rf /etc/cockpit/zfs/shares/*.conf && /bin/rm -rf /run/cockpit/zfs/shares/*.conf"],
         promise: cockpit.defer()
     };
 
@@ -12467,7 +12467,7 @@ function FnSambaZfsShareConfigurationGenerate(filesystem = { name, id, mountpoin
         return a;
     }, []);
 
-    samba.share.conf.content = "\"# COCKPIT ZFS MANAGER\n# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION\\n\[" + samba.share.name + "\]\\n\\tpath \= " + filesystem.mountpoint + "\\n\\tcomment \= " + samba.share.comment + "\\n\\tbrowseable = " + (samba.share.browseable ? "yes" : "no") + "\\n\\tread only = " + (samba.share.readonly ? "yes" : "no") + "\\n\\tguest ok = " + (samba.share.guestok ? "yes" : "no") + "\\n\\n# ADD ADDITIONAL CONFIGURATION HERE\\n" + samba.share.additional.join("\\n") + "\\n\" > \"" + samba.share.conf.path + "\"";
+    samba.share.conf.content = "\"# ZFS manager\n# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION\\n\[" + samba.share.name + "\]\\n\\tpath \= " + filesystem.mountpoint + "\\n\\tcomment \= " + samba.share.comment + "\\n\\tbrowseable = " + (samba.share.browseable ? "yes" : "no") + "\\n\\tread only = " + (samba.share.readonly ? "yes" : "no") + "\\n\\tguest ok = " + (samba.share.guestok ? "yes" : "no") + "\\n\\n# ADD ADDITIONAL CONFIGURATION HERE\\n" + samba.share.additional.join("\\n") + "\\n\" > \"" + samba.share.conf.path + "\"";
 
     return samba.share.conf.content;
 }
@@ -12990,7 +12990,7 @@ function FnSambaZfsShareEnable(pool = { name, id }, filesystem = { name, id, mou
 
 function FnSambaZfsSharesConfigurationReload() {
     let process = {
-        command: ["/bin/sh", "-c", "echo '# COCKPIT ZFS MANAGER\n# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION' > /etc/cockpit/zfs/shares.conf && /bin/ls /etc/cockpit/zfs/shares/*.conf 2> /dev/null | /bin/sed -e 's/^/include = /' >> /etc/cockpit/zfs/shares.conf && echo '# COCKPIT ZFS MANAGER\n# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION' > /run/cockpit/zfs/shares.conf && /bin/ls /run/cockpit/zfs/shares/*.conf 2> /dev/null | /bin/sed -e 's/^/include = /' >> /run/cockpit/zfs/shares.conf"]
+        command: ["/bin/sh", "-c", "echo '# ZFS manager\n# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION' > /etc/cockpit/zfs/shares.conf && /bin/ls /etc/cockpit/zfs/shares/*.conf 2> /dev/null | /bin/sed -e 's/^/include = /' >> /etc/cockpit/zfs/shares.conf && echo '# ZFS manager\n# WARNING: DO NOT EDIT, AUTO-GENERATED CONFIGURATION' > /run/cockpit/zfs/shares.conf && /bin/ls /run/cockpit/zfs/shares/*.conf 2> /dev/null | /bin/sed -e 's/^/include = /' >> /run/cockpit/zfs/shares.conf"]
     };
 
     FnConsole.log[2]("Samba, ZFS Shares Configuration, Reload: In Progress");
@@ -13218,7 +13218,7 @@ function FnModalsRegister() {
 
 //#endregion
 
-//#region Modal Cockpit ZFS Manager
+//#region Modal ZFS manager
 
 function FnModalAbout() {
     let modal = {
@@ -13230,11 +13230,11 @@ function FnModalAbout() {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">About Cockpit ZFS Manager</h4>
+                        <h4 class="modal-title">About ZFS manager</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="modal-ct-bodytext-1">Cockpit ZFS Manager is an interactive ZFS on Linux admin package for Cockpit.</div>
-                        ` + FnDisplayInlineAlert({ status: "info", title: "A new version of Cockpit ZFS Manager is now available", description: `<span id="span-about-update-version"></span>` }, { name: "about-update", id: null, hidden: true }) + `
+                        <div class="modal-ct-bodytext-1">ZFS manager is an interactive ZFS on Linux admin package for Cockpit.</div>
+                        ` + FnDisplayInlineAlert({ status: "info", title: "A new version of ZFS manager is now available", description: `<span id="span-about-update-version"></span>` }, { name: "about-update", id: null, hidden: true }) + `
                         <div><span>Version:</span> <span>` + zfsmanager.version + `</span></div>
                         <div>Copyright &copy; 2019-2020 OPTIMANS Pty Ltd.</div>
                         <div>Website: <a href="https://github.com/optimans/cockpit-zfs-manager" target="_blank">github.com/optimans/cockpit-zfs-manager</a></div>
@@ -13277,7 +13277,7 @@ function FnModalConfigureContent(modal = { id }) {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Configure Cockpit ZFS Manager</h4>
+                    <h4 class="modal-title">Configure ZFS manager</h4>
                 </div>
                 <div class="modal-body">
                     ` + (!zfsmanager.user.configuration ? FnDisplayInlineAlert({ status: "info", title: "Configuration does not exist. Configure to save a new configuration.", description: null }, { name: null, id: null, hidden: false }) : ``) + `
@@ -13483,7 +13483,7 @@ function FnModalUpdateContent(modal = { id }) {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Updating Cockpit ZFS Manager</h4>
+                    <h4 class="modal-title">Updating ZFS manager</h4>
                 </div>
                 <div class="modal-body">
                     <div class="modal-ct-bodytext-1">Please wait...</div>
@@ -13524,7 +13524,7 @@ function FnModalWelcomeContent(modal = { id }) {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Welcome to Cockpit ZFS Manager</h4>
+                    <h4 class="modal-title">Welcome to ZFS manager</h4>
                 </div>
                 <div class="modal-body">
                     <div class="modal-ct-bodytext-1">Configure initial settings to get started. Additional settings can be configured later.</div>
