@@ -1905,12 +1905,12 @@ function FnStoragePoolClear(pool = { name, id }, modal = { name, id }) {
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Storage Pool errors successfully cleared", description: pool.name, breakword: false }, { name: "storagepool-clear", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "ZFS pool errors successfully cleared", description: pool.name, breakword: false }, { name: "storagepool-clear", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Clear Errors: Success, Pool: " + pool.name);
         })
         .fail(function (message, data) {
-            FnDisplayAlert({ status: "danger", title: "Storage Pool errors could not be cleared", description: pool.name, breakword: false }, { name: "storagepool-clear", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "danger", title: "ZFS pool errors could not be cleared", description: pool.name, breakword: false }, { name: "storagepool-clear", id: pool.id, timeout: 4 });
 
             FnConsole.warn("Storage Pools, Clear Errors: Failed, Pool: " + pool.name + ", Message: " + (data ? data : message));
         })
@@ -2924,7 +2924,7 @@ function FnStoragePoolCreate(pool = { name, ashift, autoexpand, autoreplace, aut
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Storage Pool successfully created", description: pool.name, breakword: false }, { name: "storagepool-create", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "ZFS pool successfully created", description: pool.name, breakword: false }, { name: "storagepool-create", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Create: Success, Pool: " + pool.name);
 
@@ -2956,7 +2956,7 @@ function FnStoragePoolCreate(pool = { name, ashift, autoexpand, autoreplace, aut
                 $("#validationwrapper-storagepools-create-disks").addClass("has-error");
                 $("#helpblock-storagepools-create-disks").addClass("has-error").removeClass("hidden").text("Disks are of different sizes. Forcefully create ZFS pool to override.");
             } else {
-                FnDisplayAlert({ status: "danger", title: "Storage Pool could not be created", description: pool.name, breakword: false }, { name: "storagepool-create", id: pool.id, timeout: 4 });
+                FnDisplayAlert({ status: "danger", title: "ZFS pool could not be created", description: pool.name, breakword: false }, { name: "storagepool-create", id: pool.id, timeout: 4 });
             }
 
             FnConsole.warn("Storage Pools, Create: Failed, Pool: " + pool.name + ", Message: " + (data ? data : message));
@@ -3261,7 +3261,7 @@ function FnStoragePoolDestroyCommand(pool = { name, id, force: false }) {
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Storage Pool successfully destroyed", description: pool.name, breakword: false }, { name: "storagepool-destroy", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "ZFS pool successfully destroyed", description: pool.name, breakword: false }, { name: "storagepool-destroy", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Destroy: Success, Pool: " + pool.name);
         })
@@ -3271,7 +3271,7 @@ function FnStoragePoolDestroyCommand(pool = { name, id, force: false }) {
 }
 
 function FnStoragePoolDestroyFail(pool = { name, id }, process = { data, message }) {
-    FnDisplayAlert({ status: "danger", title: "Storage Pool could not be destroyed", description: pool.name, breakword: false }, { name: "storagepool-destroy", id: pool.id, timeout: 4 });
+    FnDisplayAlert({ status: "danger", title: "ZFS pool could not be destroyed", description: pool.name, breakword: false }, { name: "storagepool-destroy", id: pool.id, timeout: 4 });
 
     FnConsole.warn("Storage Pools, Destroy: Failed, Pool: " + pool.name + ", Message: " + (process.data ? process.data : process.message));
 
@@ -3306,11 +3306,11 @@ function FnStoragePoolDestroyLabelClear(pool = { name, id }, disks = { id: [] })
                     if (_index == (disks.id.length - 1)) {
                         setTimeout(function () {
                             if (disks.clear.error == 0) {
-                                FnDisplayAlert({ status: "success", title: "Storage Pool disk labels successfully cleared", description: pool.name, breakword: false }, { name: "storagepool-destroy-labelclear", id: pool.id, timeout: 4 });
+                                FnDisplayAlert({ status: "success", title: "ZFS pool disk labels successfully cleared", description: pool.name, breakword: false }, { name: "storagepool-destroy-labelclear", id: pool.id, timeout: 4 });
 
                                 FnConsole.log[1]("Storage Pools, Disk Labels, Clear: Success");
                             } else {
-                                FnDisplayAlert({ status: "danger", title: "Storage Pool disk labels could not be cleared", description: pool.name, breakword: false }, { name: "storagepool-destroy-labelclear", id: pool.id, timeout: 4 });
+                                FnDisplayAlert({ status: "danger", title: "ZFS pool disk labels could not be cleared", description: pool.name, breakword: false }, { name: "storagepool-destroy-labelclear", id: pool.id, timeout: 4 });
 
                                 FnConsole.warn("Storage Pools, Disk Labels, Clear: Failed");
                             }
@@ -3828,7 +3828,7 @@ function FnStoragePoolExportCommand(pool = { name, id, force: false }, display =
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Storage Pool successfully exported", description: pool.name, breakword: false }, { name: "storagepool-export", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "ZFS pool successfully exported", description: pool.name, breakword: false }, { name: "storagepool-export", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Export: Success, Pool: " + pool.name);
         })
@@ -3849,7 +3849,7 @@ function FnStoragePoolExportCommand(pool = { name, id, force: false }, display =
 }
 
 function FnStoragePoolExportFail(pool = { name, id }, process = { data, message }, display = { refresh: true }) {
-    FnDisplayAlert({ status: "danger", title: "Storage Pool could not be exported", description: pool.name, breakword: false }, { name: "storagepool-export", id: pool.id, timeout: 4 });
+    FnDisplayAlert({ status: "danger", title: "ZFS pool could not be exported", description: pool.name, breakword: false }, { name: "storagepool-export", id: pool.id, timeout: 4 });
 
     FnConsole.warn("Storage Pools, Export: Failed, Pool: " + pool.name + ", Message: " + (process.data ? process.data : process.message));
 
@@ -3995,11 +3995,11 @@ function FnStoragePoolImport(pool = { name, altroot, destroyed: false, force: fa
             pool.imported = true;
 
             if (disks.fallback) {
-                FnDisplayAlert({ status: "warning", title: "Storage Pool imported with errors", description: pool.name, breakword: false }, { name: "storagepools-import", id: pool.id, timeout: 4 });
+                FnDisplayAlert({ status: "warning", title: "ZFS pool imported with errors", description: pool.name, breakword: false }, { name: "storagepools-import", id: pool.id, timeout: 4 });
 
                 FnConsole.warn("Storage Pools, Import: Warning, Pool: " + pool.name + ", Message: " + disks.identifiertext + " disks identifier was not available during import. Block Device disks identifier was used.");
             } else {
-                FnDisplayAlert({ status: "success", title: "Storage Pool successfully imported", description: pool.name, breakword: false }, { name: "storagepools-import", id: pool.id, timeout: 4 });
+                FnDisplayAlert({ status: "success", title: "ZFS pool successfully imported", description: pool.name, breakword: false }, { name: "storagepools-import", id: pool.id, timeout: 4 });
 
                 FnConsole.log[1]("Storage Pools, Import: Success, Pool: " + pool.name);
             }
@@ -4008,7 +4008,7 @@ function FnStoragePoolImport(pool = { name, altroot, destroyed: false, force: fa
             if (/cannot mount.*directory is not empty|smb add share failed|cannot share/gi.test(data)) { //Storage pool has successfully imported, however a file system error is generated
                 pool.imported = true;
 
-                FnDisplayAlert({ status: "warning", title: "Storage Pool imported with errors", description: pool.name, breakword: false }, { name: "storagepools-import", id: pool.id, timeout: 4 });
+                FnDisplayAlert({ status: "warning", title: "ZFS pool imported with errors", description: pool.name, breakword: false }, { name: "storagepools-import", id: pool.id, timeout: 4 });
 
                 FnConsole.warn("Storage Pools, Import: Warning, Pool: " + pool.name + ", Message: " + (data ? data : message));
             } else if (/cannot import.*pool already exists/gi.test(data)) {
@@ -4021,7 +4021,7 @@ function FnStoragePoolImport(pool = { name, altroot, destroyed: false, force: fa
                 $("#helpblock-storagepools-import-storagepools").removeClass("hidden").text("Storage pool name already exists. New name is needed.");
                 $("#input-storagepools-import-namenew").focus();
             } else {
-                FnDisplayAlert({ status: "danger", title: "Storage Pool could not be imported", description: pool.name, breakword: false }, { name: "storagepools-import", id: pool.id, timeout: 4 });
+                FnDisplayAlert({ status: "danger", title: "ZFS pool could not be imported", description: pool.name, breakword: false }, { name: "storagepools-import", id: pool.id, timeout: 4 });
             }
 
             if (!modal.hide) {
@@ -4334,12 +4334,12 @@ function FnStoragePoolRegenerateGuid(pool = { name, id }, modal = { name, id }) 
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Storage Pool GUID successfully regenerated", description: pool.name, breakword: false }, { name: "storagepool-regenerateguid", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "ZFS pool GUID successfully regenerated", description: pool.name, breakword: false }, { name: "storagepool-regenerateguid", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Regenerate GUID: Success, Pool: " + pool.name);
         })
         .fail(function (message, data) {
-            FnDisplayAlert({ status: "danger", title: "Storage Pool GUID could not be regenerated", description: pool.name, breakword: false }, { name: "storagepool-regenerateguid", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "danger", title: "ZFS pool GUID could not be regenerated", description: pool.name, breakword: false }, { name: "storagepool-regenerateguid", id: pool.id, timeout: 4 });
 
             FnConsole.warn("Storage Pools, Regenerate GUID: Failed, Pool: " + pool.name + ", Message: " + (data ? data : message));
         })
@@ -4364,12 +4364,12 @@ function FnStoragePoolResilver(pool = { name, id }, modal = { name, id }) {
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Storage Pool resilver successfully started", description: pool.name, breakword: false }, { name: "storagepool-resilver", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "ZFS pool resilver successfully started", description: pool.name, breakword: false }, { name: "storagepool-resilver", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Resilver, Start: Success, Pool: " + pool.name);
         })
         .fail(function (message, data) {
-            FnDisplayAlert({ status: "danger", title: "Storage Pool resilver could not be started", description: pool.name, breakword: false }, { name: "storagepool-resilver", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "danger", title: "ZFS pool resilver could not be started", description: pool.name, breakword: false }, { name: "storagepool-resilver", id: pool.id, timeout: 4 });
 
             FnConsole.warn("Storage Pools, Resilver, Start: Failed, Pool: " + pool.name + ", Message: " + (data ? data : message));
         })
@@ -4392,12 +4392,12 @@ function FnStoragePoolScrubPause(pool = { name, id }, display = { refresh: true 
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Storage Pool scrub successfully paused", description: pool.name, breakword: false }, { name: "storagepool-scrub-pause", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "ZFS pool scrub successfully paused", description: pool.name, breakword: false }, { name: "storagepool-scrub-pause", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Scrub, Pause: Success, Pool: " + pool.name);
         })
         .fail(function (message, data) {
-            FnDisplayAlert({ status: "danger", title: "Storage Pool scrub could not be paused", description: pool.name, breakword: false }, { name: "storagepool-scrub-pause", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "danger", title: "ZFS pool scrub could not be paused", description: pool.name, breakword: false }, { name: "storagepool-scrub-pause", id: pool.id, timeout: 4 });
 
             FnConsole.warn("Storage Pools, Scrub, Pause: Failed, Pool: " + pool.name + ", Message: " + (data ? data : message));
         })
@@ -4420,20 +4420,20 @@ function FnStoragePoolScrubStart(pool = { name, id }, scrub = { resume: false },
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Storage Pool scrub successfully " + (scrub.resume ? "resumed" : "started"), description: pool.name, breakword: false }, { name: "storagepool-scrub-start", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "ZFS pool scrub successfully " + (scrub.resume ? "resumed" : "started"), description: pool.name, breakword: false }, { name: "storagepool-scrub-start", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Scrub, " + (scrub.resume ? "Resume" : "Start") + ": Success, Pool: " + pool.name);
         })
         .fail(function (message, data) {
             if (/currently scrubbing/gi.test(data)) { //Start scrub will fail if the storage pool has already initiated scrub
-                FnDisplayAlert({ status: "success", title: "Storage Pool scrub successfully " + (scrub.resume ? "resumed" : "started"), description: pool.name, breakword: false }, { name: "storagepool-scrub-start", id: pool.id, timeout: 4 });
+                FnDisplayAlert({ status: "success", title: "ZFS pool scrub successfully " + (scrub.resume ? "resumed" : "started"), description: pool.name, breakword: false }, { name: "storagepool-scrub-start", id: pool.id, timeout: 4 });
 
                 FnConsole.log[1]("Storage Pools, Scrub, " + (scrub.resume ? "Resume" : "Start") + ": Success, Pool: " + pool.name);
             } else {
                 if (/currently resilvering/gi.test(data)) { //Start scrub will fail if the storage pool has initiated resilver
-                    FnDisplayAlert({ status: "warning", title: "Storage Pool scrub could not be " + (scrub.resume ? "resumed" : "started") + ". Resilver in progress", description: pool.name, breakword: false }, { name: "storagepool-scrub-start", id: pool.id, timeout: 4 });
+                    FnDisplayAlert({ status: "warning", title: "ZFS pool scrub could not be " + (scrub.resume ? "resumed" : "started") + ". Resilver in progress", description: pool.name, breakword: false }, { name: "storagepool-scrub-start", id: pool.id, timeout: 4 });
                 } else {
-                    FnDisplayAlert({ status: "danger", title: "Storage Pool scrub could not be " + (scrub.resume ? "resumed" : "started"), description: pool.name, breakword: false }, { name: "storagepool-scrub-start", id: pool.id, timeout: 4 });
+                    FnDisplayAlert({ status: "danger", title: "ZFS pool scrub could not be " + (scrub.resume ? "resumed" : "started"), description: pool.name, breakword: false }, { name: "storagepool-scrub-start", id: pool.id, timeout: 4 });
                 }
 
                 FnConsole.warn("Storage Pools, Scrub, " + (scrub.resume ? "Resume" : "Start") + ": Failed, Pool: " + pool.name + ", Message: " + (data ? data : message));
@@ -4458,12 +4458,12 @@ function FnStoragePoolScrubStop(pool = { name, id }, display = { refresh: true }
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Storage Pool scrub successfully stopped", description: pool.name, breakword: false }, { name: "storagepool-scrub-stop", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "ZFS pool scrub successfully stopped", description: pool.name, breakword: false }, { name: "storagepool-scrub-stop", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Scrub, Stop: Success, Pool: " + pool.name);
         })
         .fail(function (message, data) {
-            FnDisplayAlert({ status: "danger", title: "Storage Pool scrub could not be stopped", description: pool.name, breakword: false }, { name: "storagepool-scrub-stop", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "danger", title: "ZFS pool scrub could not be stopped", description: pool.name, breakword: false }, { name: "storagepool-scrub-stop", id: pool.id, timeout: 4 });
 
             FnConsole.warn("Storage Pools, Scrub, Stop: Failed, Pool: " + pool.name + ", Message: " + (data ? data : message));
         })
@@ -4674,7 +4674,7 @@ function FnStoragePoolUpgrade(pool = { name, id }, modal = { name, id }) {
             FnConsole.log[4](FnConsoleVerbose({ data: data, message: "Storage Pools, Upgrade:" }));
 
             if (/Successfully upgraded|Enabled the following features/gi.test(data)) {
-                FnDisplayAlert({ status: "success", title: "Storage Pool successfully upgraded", description: pool.name, breakword: false }, { name: "storagepool-upgrade", id: pool.id, timeout: 4 });
+                FnDisplayAlert({ status: "success", title: "ZFS pool successfully upgraded", description: pool.name, breakword: false }, { name: "storagepool-upgrade", id: pool.id, timeout: 4 });
 
                 FnConsole.log[1]("Storage Pools, Upgrade: Success, Pool: " + pool.name);
             } else {
@@ -4694,7 +4694,7 @@ function FnStoragePoolUpgrade(pool = { name, id }, modal = { name, id }) {
 }
 
 function FnStoragePoolUpgradeFail(pool = { name, id }, process = { data, message }) {
-    FnDisplayAlert({ status: "danger", title: "Storage Pool could not be upgraded", description: pool.name, breakword: false }, { name: "storagepool-upgrade", id: pool.id, timeout: 4 });
+    FnDisplayAlert({ status: "danger", title: "ZFS pool could not be upgraded", description: pool.name, breakword: false }, { name: "storagepool-upgrade", id: pool.id, timeout: 4 });
 
     FnConsole.warn("Storage Pools, Upgrade: Failed, Pool: " + pool.name + ", Message: " + (process.data ? process.data : process.message));
 }
