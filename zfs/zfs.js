@@ -884,12 +884,12 @@ function FnCockpitElementsDisable() {
     //Disable buttons
     $("#btn-configure").addClass("disabled");
     $("#btn-storagepools-filesystems-unlock").addClass("disabled");
-    $("#btn-storagepools-create").prop("title", message + " create a storage pool").attr("data-placement", "auto bottom").attr("data-toggle", "tooltip").addClass("disabled");
-    $("#btn-storagepools-import").prop("title", message + " import a storage pool").attr("data-placement", "auto bottom").attr("data-toggle", "tooltip").addClass("disabled");
+    $("#btn-storagepools-create").prop("title", message + " create a ZFS pool").attr("data-placement", "auto bottom").attr("data-toggle", "tooltip").addClass("disabled");
+    $("#btn-storagepools-import").prop("title", message + " import a ZFS pool").attr("data-placement", "auto bottom").attr("data-toggle", "tooltip").addClass("disabled");
     $("[id^=btn-storagepool-filesystems-create-]").prop("title", message + " create a file system").attr("data-placement", "auto top").attr("data-toggle", "tooltip").addClass("disabled");
     $("[id^=btn-storagepool-snapshots-create-]").prop("title", message + " create a snapshot").attr("data-placement", "auto top").attr("data-toggle", "tooltip").addClass("disabled");
     $("[id^=btn-storagepool-snapshot-dropdown-]").prop("title", message + " manage this snapshot").attr("data-placement", "auto left").attr("data-toggle", "tooltip").addClass("disabled");
-    $("[id^=btn-storagepool-status-dropdown-]").prop("title", message + " manage this storage pool").attr("data-placement", "auto left").attr("data-toggle", "tooltip").addClass("disabled");
+    $("[id^=btn-storagepool-status-dropdown-]").prop("title", message + " manage this ZFS pool").attr("data-placement", "auto left").attr("data-toggle", "tooltip").addClass("disabled");
 
     //Disable privileged items
     $(".privileged").addClass("disabled");
@@ -1140,7 +1140,7 @@ function FnStoragePoolsGet() {
                     }
 
                     if (pools.empty) {
-                        $("#table-storagepools").append(`<tbody class="hidden"><tr class="listing-ct-item listing-ct-nonavigate listing-ct-storagepoolsnotfound"><td colspan="11">No storage pools found.</td></tr></tbody>`);
+                        $("#table-storagepools").append(`<tbody class="hidden"><tr class="listing-ct-item listing-ct-nonavigate listing-ct-storagepoolsnotfound"><td colspan="11">No ZFS pools found.</td></tr></tbody>`);
                     }
 
                     setTimeout(function () {
@@ -1244,7 +1244,7 @@ function FnStoragePoolsGetCommand(process = { data, message }) {
 			<tbody class="hidden">
 				<tr id="tr-storagepool-` + pool.id + `" class="listing-ct-item listing-ct-nonavigate" data-pool-altroot="` + pool.altroot + `" data-pool-autotrim="` + pool.autotrim + `" data-pool-boot="` + pool.boot + `" data-pool-feature-allocation_classes="` + pool.feature.allocation_classes + `" data-pool-feature-device_removal="` + pool.feature.device_removal + `" data-pool-feature-edonr="` + pool.feature.edonr + `" data-pool-feature-encryption="` + pool.feature.encryption + `" data-pool-feature-large_blocks="` + pool.feature.large_blocks + `" data-pool-feature-large_dnode="` + pool.feature.large_dnode + `" data-pool-feature-lz4_compress="` + pool.feature.lz4_compress + `" data-pool-feature-resilver_defer="` + pool.feature.resilver_defer + `" data-pool-feature-sha512="` + pool.feature.sha512 + `" data-pool-feature-skein="` + pool.feature.skein + `" data-pool-guid="` + pool.guid + `" data-pool-id="` + pool.id + `" data-pool-name="` + pool.name + `" data-pool-readonly="` + pool.readonly + `" data-pool-refresh-id="" data-pool-refresh-filesystems="false" data-pool-refresh-snapshots="false" data-pool-refresh-status="false" data-pool-root="` + pool.root + `" data-pool-special="false" data-pool-upgrade="` + pool.upgrade + `" data-pool-version="` + pool.version + `">
 					<td class="listing-ct-toggle"><i class="fa fa-fw"></i></td>
-					<td colspan="2"><span class="table-ct-head">Name:</span>` + pool.name + (pool.readonly ? ` <span class="pficon pficon-private pficon-ct-` + (pool.boot && zfsmanager.configuration.zfs.storagepool.bootlockdown ? `boot` : ``) + `readonly" data-placement="auto top" data-toggle="tooltip" title="` + (pool.boot && zfsmanager.configuration.zfs.storagepool.bootlockdown ? `The user <strong>` + zfsmanager.user.name + `</strong> is not permitted to manage this storage pool` : `Storage Pool is Read Only`) + `"></span>` : (pool.altroot ? ` <span class="pf-icon pficon-migration pficon-ct-altroot" data-placement="auto top" data-toggle="tooltip" title="Alternative Root is Enabled for Storage Pool"></span>` : ``)) + `</th>
+					<td colspan="2"><span class="table-ct-head">Name:</span>` + pool.name + (pool.readonly ? ` <span class="pficon pficon-private pficon-ct-` + (pool.boot && zfsmanager.configuration.zfs.storagepool.bootlockdown ? `boot` : ``) + `readonly" data-placement="auto top" data-toggle="tooltip" title="` + (pool.boot && zfsmanager.configuration.zfs.storagepool.bootlockdown ? `The user <strong>` + zfsmanager.user.name + `</strong> is not permitted to manage this ZFS pool` : `ZFS pool is Read Only`) + `"></span>` : (pool.altroot ? ` <span class="pf-icon pficon-migration pficon-ct-altroot" data-placement="auto top" data-toggle="tooltip" title="Alternative Root is Enabled for ZFS pool"></span>` : ``)) + `</th>
 					<td>
 						<span class="table-ct-head">Health:</span><div id="div-storagepool-health-` + pool.id + `"><span class="` + pool.healthicon + `"></span> ` + pool.health + `</div>
 					</td>
@@ -1318,21 +1318,21 @@ function FnStoragePoolsGetCommand(process = { data, message }) {
 		`;
 
         //Configure Storage Pool
-        pool.actionsmenu.items.itemconfigure.push(`<li><a id="btn-storagepool-configure-` + pool.id + `" data-toggle="modal" href="#modal-storagepool-configure-` + pool.id + `" tabIndex="-1">Configure Storage Pool</a></li>`);
+        pool.actionsmenu.items.itemconfigure.push(`<li><a id="btn-storagepool-configure-` + pool.id + `" data-toggle="modal" href="#modal-storagepool-configure-` + pool.id + `" tabIndex="-1">Configure ZFS pool</a></li>`);
 
         //Configure Storage Pool Features
-        pool.actionsmenu.items.itemconfigurefeatures.push(`<li><a id="btn-storagepool-configure-features-` + pool.id + `" data-toggle="modal" href="#modal-storagepool-configure-features-` + pool.id + `" tabIndex="-1">Configure Storage Pool Features</a></li>`);
+        pool.actionsmenu.items.itemconfigurefeatures.push(`<li><a id="btn-storagepool-configure-features-` + pool.id + `" data-toggle="modal" href="#modal-storagepool-configure-features-` + pool.id + `" tabIndex="-1">Configure ZFS pool features</a></li>`);
 
         //Export Storage Pool
         if (!pool.boot && !pool.root) {
-            pool.actionsmenu.items.item.push(`<li><a id="btn-storagepool-export-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-export-` + pool.id + `" tabIndex="-1">Export Storage Pool</a></li>`);
+            pool.actionsmenu.items.item.push(`<li><a id="btn-storagepool-export-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-export-` + pool.id + `" tabIndex="-1">Export ZFS pool</a></li>`);
 
             pool.actionsmenu.register.export = true;
         }
 
         //Destroy Storage Pool
         if (!pool.readonly && !pool.boot && !pool.root) {
-            pool.actionsmenu.items.item.push(`<li><a id="btn-storagepool-destroy-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-destroy-` + pool.id + `" tabIndex="-1">Destroy Storage Pool</a></li>`);
+            pool.actionsmenu.items.item.push(`<li><a id="btn-storagepool-destroy-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-destroy-` + pool.id + `" tabIndex="-1">Destroy ZFS pool</a></li>`);
 
             pool.actionsmenu.register.destroy = true;
         }
@@ -1681,7 +1681,7 @@ function FnStoragePoolsImportableGet(pools = { destroyed: false }) {
                                             if (/ONLINE/g.test(pool.health) == false) {
                                                 pool.healthstatus = ` <span class="pficon pficon-warning-triangle-o list-view-pf-icon-sm"></span>`;
 
-                                                $("#helpblock-storagepools-import-storagepools-warning").html("One or more storage pools are in an unhealthy state." + pool.healthstatus);
+                                                $("#helpblock-storagepools-import-storagepools-warning").html("One or more ZFS pools are in an unhealthy state." + pool.healthstatus);
                                             }
 
                                             pool.output = `
@@ -1713,7 +1713,7 @@ function FnStoragePoolsImportableGet(pools = { destroyed: false }) {
                                             pools.output = `
                                                 <li class="list-group-item">
                                                     <label>
-                                                        No ` + (pools.destroyed ? "destroyed" : "importable") + ` storage pools found.
+                                                        No ` + (pools.destroyed ? "destroyed" : "importable") + ` ZFS pools found.
                                                     </label>
                                                 </li>
                                             `;
@@ -1766,7 +1766,7 @@ function FnStoragePoolsImportableGetFail(pools = { destroyed: false }) {
             pools.output = `
                         <li class="list-group-item">
                             <label>
-                                No ` + (pools.destroyed ? "destroyed" : "importable") + ` storage pools found.
+                                No ` + (pools.destroyed ? "destroyed" : "importable") + ` ZFS pools found.
                             </label>
                         </li>
                     `;
@@ -1901,7 +1901,7 @@ function FnStoragePoolClear(pool = { name, id }, modal = { name, id }) {
     FnConsole.log[2]("Storage Pools, Clear Errors: In Progress, Pool: " + pool.name);
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
-    $("#spinner-" + modal.name + "-" + modal.id + " span").text("Clearing storage pool errors...");
+    $("#spinner-" + modal.name + "-" + modal.id + " span").text("Clearing ZFS pool errors...");
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
@@ -2655,7 +2655,7 @@ function FnStoragePoolConfigure(pool = { name, id, ashift, autoexpand, autorepla
                 if (pool.properties.new.length > 0 && !pool.readonly) {
                     FnConsole.log[2]("Storage Pools, Configure: In Progress, Pool: " + pool.name);
 
-                    $("#spinner-storagepool-configure-" + pool.id + " span").text("Configuring storage pool...");
+                    $("#spinner-storagepool-configure-" + pool.id + " span").text("Configuring ZFS pool...");
 
                     FnStoragePoolConfigureCommand({ name: pool.name, id: pool.id, properties: { new: pool.properties.new } }, { id: modal.id });
                 } else {
@@ -2666,7 +2666,7 @@ function FnStoragePoolConfigure(pool = { name, id, ashift, autoexpand, autorepla
         if (pool.properties.new.length > 0 && !pool.readonly) {
             FnConsole.log[2]("Storage Pools, Configure: In Progress, Pool: " + pool.name);
 
-            $("#spinner-storagepool-configure-" + pool.id + " span").text("Configuring storage pool...");
+            $("#spinner-storagepool-configure-" + pool.id + " span").text("Configuring ZFS pool...");
 
             FnStoragePoolConfigureCommand({ name: pool.name, id: pool.id, properties: { new: pool.properties.new } }, { id: modal.id });
         } else {
@@ -2819,7 +2819,7 @@ function FnStoragePoolConfigureFeatures(pool = { name, id, feature: { allocation
     if (pool.features.new.length > 0 && !pool.readonly) {
         FnConsole.log[2]("Storage Pools, Configure, Features: In Progress, Pool: " + pool.name);
 
-        $("#spinner-storagepool-configure-features-" + pool.id + " span").text("Configuring storage pool features...");
+        $("#spinner-storagepool-configure-features-" + pool.id + " span").text("Configuring ZFS pool features...");
 
         FnStoragePoolConfigureFeaturesCommand({ name: pool.name, id: pool.id, features: { new: pool.features.new } }, { id: modal.id });
     } else {
@@ -2920,7 +2920,7 @@ function FnStoragePoolCreate(pool = { name, ashift, autoexpand, autoreplace, aut
     FnConsole.log[1]("Storage Pools, Create: In Progress, Pool: " + pool.name);
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
-    $("#spinner-storagepools-create span").text("Creating storage pool...");
+    $("#spinner-storagepools-create span").text("Creating ZFS pool...");
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
@@ -2954,7 +2954,7 @@ function FnStoragePoolCreate(pool = { name, ashift, autoexpand, autoreplace, aut
                 modal.hide = false;
 
                 $("#validationwrapper-storagepools-create-disks").addClass("has-error");
-                $("#helpblock-storagepools-create-disks").addClass("has-error").removeClass("hidden").text("Disks are of different sizes. Forcefully create storage pool to override.");
+                $("#helpblock-storagepools-create-disks").addClass("has-error").removeClass("hidden").text("Disks are of different sizes. Forcefully create ZFS pool to override.");
             } else {
                 FnDisplayAlert({ status: "danger", title: "Storage Pool could not be created", description: pool.name, breakword: false }, { name: "storagepool-create", id: pool.id, timeout: 4 });
             }
@@ -3066,7 +3066,7 @@ function FnStoragePoolDestroy(pool = { name, id, altroot: false, force: false, l
                                 id: data.split(/\n/g).filter(v => v && /\ton$/i.test(v))
                             };
 
-                            $("#spinner-storagepool-destroy-" + pool.id + " span").text("Destroying storage pool...");
+                            $("#spinner-storagepool-destroy-" + pool.id + " span").text("Destroying ZFS pool...");
 
                             if (filesystems.id.length > 0) {
                                 FnStoragePoolDestroyCommand({ name: pool.name, id: pool.id, force: pool.force })
@@ -3165,7 +3165,7 @@ function FnStoragePoolDestroy(pool = { name, id, altroot: false, force: false, l
                         id: data.split(/\n/g).filter(v => v && /\ton$/i.test(v))
                     };
 
-                    $("#spinner-storagepool-destroy-" + pool.id + " span").text("Destroying storage pool...");
+                    $("#spinner-storagepool-destroy-" + pool.id + " span").text("Destroying ZFS pool...");
 
                     if (filesystems.id.length > 0) {
                         FnStoragePoolDestroyCommand({ name: pool.name, id: pool.id, force: pool.force })
@@ -3461,12 +3461,12 @@ function FnStoragePoolDiskAttachCommand(pool = { name, id, force: false }, virtu
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Disk attached successfully to Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-disk-attach", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "Disk attached successfully to ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-disk-attach", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Disk, Attach: Success, Pool: " + pool.name + ", " + (!virtualdevice.disk ? "Virtual Device: " + virtualdevice.id + ", " : "") + "Disk: " + disk.idnew);
         })
         .fail(function (message, data) {
-            FnDisplayAlert({ status: "danger", title: "Disk could not be attached to Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-disk-attach", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "danger", title: "Disk could not be attached to ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-disk-attach", id: pool.id, timeout: 4 });
 
             FnConsole.warn("Storage Pools, Disk, Attach: Failed, Pool: " + pool.name + ", " + (!virtualdevice.disk ? "Virtual Device: " + virtualdevice.id + ", " : "") + "Disk: " + disk.idnew + ", Message: " + (data ? data : message));
         })
@@ -3480,7 +3480,7 @@ function FnStoragePoolDiskAttachCommand(pool = { name, id, force: false }, virtu
 }
 
 function FnStoragePoolDiskAttachFail(pool = { name, id }, virtualdevice = { id, disk: true }, disk = { idnew }, modal = { name, id }, process = { data, message }) {
-    FnDisplayAlert({ status: "danger", title: "Disk could not be attached to Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-disk-attach", id: pool.id, timeout: 4 });
+    FnDisplayAlert({ status: "danger", title: "Disk could not be attached to ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-disk-attach", id: pool.id, timeout: 4 });
 
     FnConsole.warn("Storage Pools, Disk, Attach: Failed, Pool: " + pool.name + ", " + (!virtualdevice.disk ? "Virtual Device: " + virtualdevice.id + ", " : "") + "Disk: " + disk.idnew + ", Message: " + (process.data ? process.data : process.message));
 
@@ -3537,7 +3537,7 @@ function FnStoragePoolDiskDetach(pool = { name, id }, disk = { id, labelclear: f
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Disk detached successfully from Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-disk-detach", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "Disk detached successfully from ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-disk-detach", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Disk, Detach: Success, Pool: " + pool.name + ", Disk: " + disk.id);
 
@@ -3559,7 +3559,7 @@ function FnStoragePoolDiskDetach(pool = { name, id }, disk = { id, labelclear: f
             }
         })
         .fail(function (message, data) {
-            FnDisplayAlert({ status: "danger", title: "Disk could not be detached from Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-disk-detach", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "danger", title: "Disk could not be detached from ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-disk-detach", id: pool.id, timeout: 4 });
 
             FnConsole.warn("Storage Pools, Disk, Detach: Failed, Pool: " + pool.name + ", Disk: " + disk.id + ", Message: " + (data ? data : message));
         })
@@ -3706,12 +3706,12 @@ function FnStoragePoolDiskReplace(pool = { name, id, force: false }, disk = { id
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Disk replaced successfully on Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-disk-replace", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "Disk replaced successfully on ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-disk-replace", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Disk, Replace: Success, Pool: " + pool.name + ", Disk: " + disk.id);
         })
         .fail(function (message, data) {
-            FnDisplayAlert({ status: "danger", title: "Disk could not be replaced on Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-disk-replace", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "danger", title: "Disk could not be replaced on ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-disk-replace", id: pool.id, timeout: 4 });
 
             FnConsole.warn("Storage Pools, Disk, Replace: Failed, Pool: " + pool.name + ", Disk: " + disk.id + ", Message: " + (data ? data : message));
         })
@@ -3739,7 +3739,7 @@ function FnStoragePoolExport(pool = { name, id, altroot: false, force: false, re
                                 id: data.split(/\n/g).filter(v => v && /\ton$/i.test(v))
                             };
 
-                            $("#spinner-storagepool-export-" + pool.id + " span").text("Exporting storage pool...");
+                            $("#spinner-storagepool-export-" + pool.id + " span").text("Exporting ZFS pool...");
 
                             if (filesystems.id.length > 0) {
                                 FnStoragePoolExportCommand({ name: pool.name, id: pool.id, force: pool.force }, { refresh: false })
@@ -3785,7 +3785,7 @@ function FnStoragePoolExport(pool = { name, id, altroot: false, force: false, re
                         id: data.split(/\n/g).filter(v => v && /\ton$/i.test(v))
                     };
 
-                    $("#spinner-storagepool-export-" + pool.id + " span").text("Exporting storage pool...");
+                    $("#spinner-storagepool-export-" + pool.id + " span").text("Exporting ZFS pool...");
 
                     if (filesystems.id.length > 0) {
                         FnStoragePoolExportCommand({ name: pool.name, id: pool.id, force: pool.force }, { refresh: false })
@@ -3988,7 +3988,7 @@ function FnStoragePoolImport(pool = { name, altroot, destroyed: false, force: fa
     FnConsole.log[1]("Storage Pools, Import: In Progress, Pool: " + pool.name);
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
-    $("#spinner-storagepools-import span").text("Importing storage pool...");
+    $("#spinner-storagepools-import span").text("Importing ZFS pool...");
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
@@ -4330,7 +4330,7 @@ function FnStoragePoolRegenerateGuid(pool = { name, id }, modal = { name, id }) 
     FnConsole.log[2]("Storage Pools, Regenerate GUID: In Progress, Pool: " + pool.name);
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
-    $("#spinner-" + modal.name + "-" + modal.id + " span").text("Regenerating storage pool GUID...");
+    $("#spinner-" + modal.name + "-" + modal.id + " span").text("Regenerating ZFS pool GUID...");
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
@@ -4360,7 +4360,7 @@ function FnStoragePoolResilver(pool = { name, id }, modal = { name, id }) {
     FnConsole.log[1]("Storage Pools, Resilver, Start: In Progress, Pool: " + pool.name);
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
-    $("#spinner-" + modal.name + "-" + modal.id + " span").text("Starting storage pool resilver...");
+    $("#spinner-" + modal.name + "-" + modal.id + " span").text("Starting ZFS pool resilver...");
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
@@ -4604,7 +4604,7 @@ function FnStoragePoolTrimStart(pool = { name, id }, disk = { id }, trim = { res
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
     if (!trim.resume) {
-        $("#spinner-" + modal.name + "-" + modal.id + " span").text("Starting " + (disk.id ? "disk" : "storage pool") + " TRIM...");
+        $("#spinner-" + modal.name + "-" + modal.id + " span").text("Starting " + (disk.id ? "disk" : "ZFS pool") + " TRIM...");
     }
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
@@ -4667,7 +4667,7 @@ function FnStoragePoolUpgrade(pool = { name, id }, modal = { name, id }) {
     FnConsole.log[1]("Storage Pools, Upgrade: In Progress, Pool: " + pool.name);
     FnConsole.log[3](FnConsoleCommand({ command: process.command }));
 
-    $("#spinner-" + modal.name + "-" + modal.id + " span").text("Upgrading storage pool...");
+    $("#spinner-" + modal.name + "-" + modal.id + " span").text("Upgrading ZFS pool...");
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function (data, message) {
@@ -4733,7 +4733,7 @@ function FnStoragePoolVirtualDeviceAdd(pool = { name, id, force: false, virtuald
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Virtual Device successfully added to Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-virtualdevice-add", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "Virtual Device successfully added to ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-virtualdevice-add", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Virtual Device, Add: Success, Pool: " + pool.name);
         })
@@ -4759,7 +4759,7 @@ function FnStoragePoolVirtualDeviceAdd(pool = { name, id, force: false, virtuald
             }
 
             if (modal.hide) {
-                FnDisplayAlert({ status: "danger", title: "Virtual Device could not be added to Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-virtualdevice-add", id: pool.id, timeout: 4 });
+                FnDisplayAlert({ status: "danger", title: "Virtual Device could not be added to ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-virtualdevice-add", id: pool.id, timeout: 4 });
             }
 
             FnConsole.warn("Storage Pools, Virtual Device, Add: Failed, Pool: " + pool.name + ", Message: " + (data ? data : message));
@@ -4819,7 +4819,7 @@ function FnStoragePoolVirtualDeviceRemove(pool = { name, id }, virtualdevice = {
 
     return cockpit.spawn(process.command, { err: "out", superuser: "require" })
         .done(function () {
-            FnDisplayAlert({ status: "success", title: "Virtual Device successfully removed from Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-virtualdevice-remove", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "success", title: "Virtual Device successfully removed from ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-virtualdevice-remove", id: pool.id, timeout: 4 });
 
             FnConsole.log[1]("Storage Pools, Virtual Device, Remove: Success, Pool: " + pool.name + ", Virtual Device: " + virtualdevice.id);
 
@@ -4841,7 +4841,7 @@ function FnStoragePoolVirtualDeviceRemove(pool = { name, id }, virtualdevice = {
             }
         })
         .fail(function (message, data) {
-            FnDisplayAlert({ status: "danger", title: "Virtual Device could not be removed from Storage Pool", description: pool.name, breakword: false }, { name: "storagepool-virtualdevice-remove", id: pool.id, timeout: 4 });
+            FnDisplayAlert({ status: "danger", title: "Virtual Device could not be removed from ZFS pool", description: pool.name, breakword: false }, { name: "storagepool-virtualdevice-remove", id: pool.id, timeout: 4 });
 
             FnConsole.warn("Storage Pools, Virtual Device, Remove: Failed, Pool: " + pool.name + ", Virtual Device: " + virtualdevice.id + ", Message: " + (data ? data : message));
         })
@@ -10467,84 +10467,84 @@ function FnStatusGetCommand(pool = { name, id, autotrim: false, boot: false, fea
 
         //Clear storage pool errors
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-clear-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-clear-` + _index + `-` + pool.id + `" tabindex="-1">Clear Storage Pool Errors</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-clear-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-clear-` + _index + `-` + pool.id + `" tabindex="-1">Clear ZFS pool errors</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.clear = true;
         }
 
         //Resilver Storage Pool
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name && pool.feature.resilver_defer) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-resilver-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-resilver-` + _index + `-` + pool.id + `" tabindex="-1">Resilver Storage Pool</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-resilver-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-resilver-` + _index + `-` + pool.id + `" tabindex="-1">Resilver ZFS pool</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.resilver = true;
         }
 
         //Start Storage Pool Scrub
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name && !pool.status.scrub.started && !pool.status.scrub.paused) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-scrub-start-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-scrub-start-` + _index + `-` + pool.id + `" tabindex="-1">Scrub Storage Pool</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-scrub-start-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-scrub-start-` + _index + `-` + pool.id + `" tabindex="-1">Scrub ZFS pool</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.scrub.start = true;
         }
 
         //Resume Storage Pool Scrub
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name && pool.status.scrub.paused) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-scrub-resume-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-scrub-resume-` + _index + `-` + pool.id + `" tabindex="-1">Resume Storage Pool Scrub</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-scrub-resume-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-scrub-resume-` + _index + `-` + pool.id + `" tabindex="-1">Resume ZFS pool scrub</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.scrub.resume = true;
         }
 
         //Pause Storage Pool Scrub
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name && pool.status.scrub.started) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-scrub-pause-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-scrub-pause-` + _index + `-` + pool.id + `" tabindex="-1">Pause Storage Pool Scrub</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-scrub-pause-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-scrub-pause-` + _index + `-` + pool.id + `" tabindex="-1">Pause ZFS pool scrub</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.scrub.pause = true;
         }
 
         //Stop Storage Pool Scrub
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name && (pool.status.scrub.started || pool.status.scrub.paused)) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-scrub-stop-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-scrub-stop-` + _index + `-` + pool.id + `" tabindex="-1">Stop Storage Pool Scrub</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-scrub-stop-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-scrub-stop-` + _index + `-` + pool.id + `" tabindex="-1">Stop ZFS pool scrub</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.scrub.stop = true;
         }
 
         //TRIM Storage Pool
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name && !pool.status.trim.started && !pool.status.trim.suspended) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-trim-start-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-trim-start-` + _index + `-` + pool.id + `" tabindex="-1">TRIM Storage Pool</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-trim-start-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-trim-start-` + _index + `-` + pool.id + `" tabindex="-1">TRIM ZFS pool</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.trim.start = true;
         }
 
         //Resume Storage Pool TRIM
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name && pool.status.trim.suspended) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-trim-resume-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" href="#" tabindex="-1">Resume Storage Pool TRIM</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-trim-resume-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" href="#" tabindex="-1">Resume ZFS pool TRIM</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.trim.resume = true;
         }
 
         //Suspend Storage Pool TRIM
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name && pool.status.trim.started) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-trim-suspend-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" href="#" tabindex="-1">Suspend Storage Pool TRIM</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-trim-suspend-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" href="#" tabindex="-1">Suspend ZFS pool TRIM</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.trim.suspend = true;
         }
 
         //Cancel Storage Pool TRIM
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name && (pool.status.trim.started || pool.status.trim.suspended)) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-trim-cancel-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" href="#" tabindex="-1">Cancel Storage Pool TRIM</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-trim-cancel-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" href="#" tabindex="-1">Cancel ZFS pool TRIM</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.trim.cancel = true;
         }
 
         //Upgrade Storage Pool
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name && pool.status.upgrade) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-upgrade-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-upgrade-` + _index + `-` + pool.id + `" tabindex="-1">Upgrade Storage Pool</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-upgrade-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-upgrade-` + _index + `-` + pool.id + `" tabindex="-1">Upgrade ZFS pool</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.upgrade = true;
         }
 
         //Regenerate Storage Pool GUID
         if (!pool.readonly && pool.status.config.tier.level == 0 && pool.status.config.tier.count == 1 && _value[0] == pool.name) {
-            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-regenerateguid-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-regenerateguid-` + _index + `-` + pool.id + `" tabindex="-1">Regenerate Storage Pool GUID</a></li>`);
+            pool.status.config.actionsmenu.items.storagepool.push(`<li><a id="btn-storagepool-status-regenerateguid-` + _index + `-` + pool.id + `" class="privileged` + (!zfsmanager.user.admin ? " disabled" : "") + `" data-toggle="modal" href="#modal-storagepool-status-regenerateguid-` + _index + `-` + pool.id + `" tabindex="-1">Regenerate ZFS pool GUID</a></li>`);
 
             pool.status.config.actionsmenu.register.storagepool.regenerateguid = true;
         }
@@ -11164,7 +11164,7 @@ function FnDisksAvailableGetCommand(disks = { attached: [], blkid: [], id: { dev
                 if (disk.zfsmember) {
                     disk.warningicon = ` <span class="pficon pficon-warning-triangle-o list-view-pf-icon-sm"></span>`;
 
-                    $("#helpblock-" + modal.name + "-zfsmemberwarning" + modal.id).html("One or more disks used to be a member of a Storage Pool." + disk.warningicon);
+                    $("#helpblock-" + modal.name + "-zfsmemberwarning" + modal.id).html("One or more disks used to be a member of a ZFS pool." + disk.warningicon);
                 }
 
                 disk.id.blockdevice = _value.name;
@@ -13333,7 +13333,7 @@ function FnModalConfigureContent(modal = { id }) {
                             <label id="switch-configure-zfs-filesystem-cloneorigin" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.filesystem.cloneorigin ? `checked="checked"` : ``) + ` tabIndex="9" type="checkbox"><span class="switch-toggle"></span></label><span>Display Clone Origin in Tooltip</span>
                         </div>
                         <div role="group">
-                            <label id="switch-configure-zfs-filesystem-quotarestrict" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.filesystem.quotarestrict ? `checked="checked"` : ``) + ` tabIndex="10" type="checkbox"><span class="switch-toggle"></span></label><span>Restrict quota maximum to size of storage pool</span>
+                            <label id="switch-configure-zfs-filesystem-quotarestrict" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.filesystem.quotarestrict ? `checked="checked"` : ``) + ` tabIndex="10" type="checkbox"><span class="switch-toggle"></span></label><span>Restrict quota maximum to size of ZFS pool</span>
                         </div>
                         <label class="control-label">Snapshot</label>
                         <div role="group">
@@ -13348,13 +13348,13 @@ function FnModalConfigureContent(modal = { id }) {
                         </div>
                         <label class="control-label">Storage Pool</label>
                         <div role="group">
-                            <label id="switch-configure-zfs-storagepool-boot" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.boot ? `checked="checked"` : ``) + ` tabIndex="14" type="checkbox"><span class="switch-toggle"></span></label><span>Display boot storage pool</span>
+                            <label id="switch-configure-zfs-storagepool-boot" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.boot ? `checked="checked"` : ``) + ` tabIndex="14" type="checkbox"><span class="switch-toggle"></span></label><span>Display boot ZFS pool</span>
                         </div>
                         <div class="` + (!zfsmanager.configuration.zfs.storagepool.boot ? `hidden` : ``) + `" role="group">
-                            <label id="switch-configure-zfs-storagepool-bootlockdown" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.bootlockdown ? `checked="checked"` : ``) + ` tabIndex="15" type="checkbox"><span class="switch-toggle"></span></label><span>Prevent changes to boot storage pool</span>
+                            <label id="switch-configure-zfs-storagepool-bootlockdown" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.bootlockdown ? `checked="checked"` : ``) + ` tabIndex="15" type="checkbox"><span class="switch-toggle"></span></label><span>Prevent changes to boot ZFS pool</span>
                         </div>
                         <div role="group">
-                            <label id="switch-configure-zfs-storagepool-root" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.root ? `checked="checked"` : ``) + ` tabIndex="16" type="checkbox"><span class="switch-toggle"></span></label><span>Display root storage pool</span>
+                            <label id="switch-configure-zfs-storagepool-root" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.root ? `checked="checked"` : ``) + ` tabIndex="16" type="checkbox"><span class="switch-toggle"></span></label><span>Display root ZFS pool</span>
                         </div>
                         <div role="group">
                             <label id="switch-configure-zfs-storagepool-refreshall" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.refreshall ? `checked="checked"` : ``) + ` tabIndex="17" type="checkbox"><span class="switch-toggle"></span></label><span>Refresh all components</span>
@@ -13555,13 +13555,13 @@ function FnModalWelcomeContent(modal = { id }) {
                         </div>
                         <label class="control-label">Storage Pool</label>
                         <div role="group">
-                            <label id="switch-welcome-zfs-storagepool-boot" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.boot ? `checked="checked"` : ``) + ` tabIndex="5" type="checkbox"><span class="switch-toggle"></span></label><span>Display boot storage pool</span>
+                            <label id="switch-welcome-zfs-storagepool-boot" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.boot ? `checked="checked"` : ``) + ` tabIndex="5" type="checkbox"><span class="switch-toggle"></span></label><span>Display boot ZFS pool</span>
                         </div>
                         <div class="` + (!zfsmanager.configuration.zfs.storagepool.boot ? `hidden` : ``) + `" role="group">
-                            <label id="switch-welcome-zfs-storagepool-bootlockdown" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.bootlockdown ? `checked="checked"` : ``) + ` tabIndex="6" type="checkbox"><span class="switch-toggle"></span></label><span>Prevent changes to boot storage pool</span>
+                            <label id="switch-welcome-zfs-storagepool-bootlockdown" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.bootlockdown ? `checked="checked"` : ``) + ` tabIndex="6" type="checkbox"><span class="switch-toggle"></span></label><span>Prevent changes to boot ZFS pool</span>
                         </div>
                         <div role="group">
-                            <label id="switch-welcome-zfs-storagepool-root" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.root ? `checked="checked"` : ``) + ` tabIndex="7" type="checkbox"><span class="switch-toggle"></span></label><span>Display root storage pool</span>
+                            <label id="switch-welcome-zfs-storagepool-root" class="onoff-ct privileged-modal"><input ` + (zfsmanager.configuration.zfs.storagepool.root ? `checked="checked"` : ``) + ` tabIndex="7" type="checkbox"><span class="switch-toggle"></span></label><span>Display root ZFS pool</span>
                         </div>
                         <label class="control-label">Updates</label>
                         <div role="group">
@@ -13681,7 +13681,7 @@ function FnModalStoragePoolsCreateContent(modal = { id }) {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Create Storage Pool</h4>
+                    <h4 class="modal-title">Create ZFS pool</h4>
                 </div>
                 <div class="modal-body">
                     <form class="ct-form">
@@ -13725,7 +13725,7 @@ function FnModalStoragePoolsCreateContent(modal = { id }) {
                                 </ul>
                             </div>
                         </div>
-                        <label class="control-label">Disks <a data-placement="right" data-toggle="tooltip" tabindex="-1" title="Drives with 4 KiB physical sector size may report/emulate 512 B for backwards compatibility.<br><br>Configure the storage pool sector size to 4 KiB or above to optimise disk operation"><span class="fa fa-lg fa-info-circle"></span></a></label>
+                        <label class="control-label">Disks <a data-placement="right" data-toggle="tooltip" tabindex="-1" title="Drives with 4 KiB physical sector size may report/emulate 512 B for backwards compatibility.<br><br>Configure the ZFS pool sector size to 4 KiB or above to optimise disk operation"><span class="fa fa-lg fa-info-circle"></span></a></label>
                         <div id="validationwrapper-storagepools-create-disks" class="ct-validation-wrapper" tabindex="-1">
                             <ul id="listgroup-storagepools-create-disks" class="list-group dialog-list-ct" data-field="disks" data-field-type="select-disks" tabIndex="-1"></ul>
                             <span id="helpblock-storagepools-create-disks-identifierwarning" class="help-block"></span>
@@ -13808,7 +13808,7 @@ function FnModalStoragePoolsCreateContent(modal = { id }) {
                             <label id="switch-storagepools-create-compression" class="onoff-ct privileged-modal"><input checked="checked" tabIndex="1005" type="checkbox"><span class="switch-toggle"></span></label><span>LZ4 compression</span>
                         </div>
                         <div role="group">
-                            <label id="switch-storagepools-create-autoexpand" class="onoff-ct privileged-modal"><input checked="checked" tabIndex="1006" type="checkbox"><span class="switch-toggle"></span></label><span>Automatically expand storage pool when larger devices are added</span>
+                            <label id="switch-storagepools-create-autoexpand" class="onoff-ct privileged-modal"><input checked="checked" tabIndex="1006" type="checkbox"><span class="switch-toggle"></span></label><span>Automatically expand ZFS pool when larger devices are added</span>
                         </div>
                         <div role="group">
                             <label id="switch-storagepools-create-autoreplace" class="onoff-ct privileged-modal"><input tabIndex="1007" type="checkbox"><span class="switch-toggle"></span></label><span>Automatically replace devices</span>
@@ -13820,7 +13820,7 @@ function FnModalStoragePoolsCreateContent(modal = { id }) {
                             <label id="switch-storagepools-create-selinux" class="onoff-ct privileged-modal"><input checked="checked" tabIndex="1009" type="checkbox"><span class="switch-toggle"></span></label><span>SELinux contexts for Samba</span>
                         </div>
                         <div role="group">
-                            <label id="switch-storagepools-create-force" class="onoff-ct privileged-modal"><input tabIndex="1010" type="checkbox"><span class="switch-toggle"></span></label><span>Forcefully create storage pool</span>
+                            <label id="switch-storagepools-create-force" class="onoff-ct privileged-modal"><input tabIndex="1010" type="checkbox"><span class="switch-toggle"></span></label><span>Forcefully create ZFS pool</span>
                         </div>
                     </form>
                 </div>
@@ -14145,7 +14145,7 @@ function FnModalStoragePoolsImportContent(modal = { id }) {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Import Storage Pool</h4>
+                    <h4 class="modal-title">Import ZFS pool</h4>
                 </div>
                 <div class="modal-body">
                     <form class="ct-form">
@@ -14190,7 +14190,7 @@ function FnModalStoragePoolsImportContent(modal = { id }) {
                         </div>
                         <label class="control-label">Options</label>
                         <div role="group">
-                            <label id="switch-storagepools-import-force" class="onoff-ct privileged-modal"><input tabIndex="1004" type="checkbox"><span class="switch-toggle"></span></label><span>Forcefully import storage pool</span>
+                            <label id="switch-storagepools-import-force" class="onoff-ct privileged-modal"><input tabIndex="1004" type="checkbox"><span class="switch-toggle"></span></label><span>Forcefully import ZFS pool</span>
                         </div>
                         <div role="group">
                             <label id="switch-storagepools-import-recoverymode" class="onoff-ct privileged-modal"><input tabIndex="1005" type="checkbox"><span class="switch-toggle"></span></label><span>Enable recovery mode</span>
@@ -14304,7 +14304,7 @@ function FnModalStoragePoolsImportContent(modal = { id }) {
                 });
 
                 if (pool.guid.length != 1) {
-                    $("#helpblock-storagepools-import-storagepools").removeClass("hidden").text("One storage pool is needed for import.");
+                    $("#helpblock-storagepools-import-storagepools").removeClass("hidden").text("One ZFS pool is needed for import.");
 
                     validation.storagepools = false;
                 } else {
@@ -14547,7 +14547,7 @@ function FnModalStoragePoolConfigureContent(pool = { name, id, guid, readonly: f
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Configure Storage Pool</h4>
+                    <h4 class="modal-title">Configure ZFS pool</h4>
                 </div>
                 <div class="modal-body">
                     <form class="ct-form">
@@ -14598,7 +14598,7 @@ function FnModalStoragePoolConfigureContent(pool = { name, id, guid, readonly: f
                         </div>
                         <label id="controllabel-storagepool-configure-options-` + pool.id + `" class="control-label">Options</label>
                         <div role="group">
-                            <label id="switch-storagepool-configure-autoexpand-` + pool.id + `" class="onoff-ct privileged-modal" data-field-value=""><input tabIndex="4" type="checkbox"><span class="switch-toggle"></span></label><span>Automatically expand storage pool when larger devices are added</span>
+                            <label id="switch-storagepool-configure-autoexpand-` + pool.id + `" class="onoff-ct privileged-modal" data-field-value=""><input tabIndex="4" type="checkbox"><span class="switch-toggle"></span></label><span>Automatically expand ZFS pool when larger devices are added</span>
                         </div>
                         <div role="group">
                             <label id="switch-storagepool-configure-autoreplace-` + pool.id + `" class="onoff-ct privileged-modal" data-field-value=""><input tabIndex="5" type="checkbox"><span class="switch-toggle"></span></label><span>Automatically replace devices</span>
@@ -14807,12 +14807,12 @@ function FnModalStoragePoolConfigureFeaturesContent(pool = { name, id, boot: fal
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Configure Storage Pool Features</h4>
+                    <h4 class="modal-title">Configure ZFS pool features</h4>
                 </div>
                 <div class="modal-body">
                     <div class="modal-ct-bodytext-1">Pool: ` + pool.name + `</div>
-                    ` + (pool.boot ? FnDisplayInlineAlert({ status: "danger", title: "Changes to the boot storage pool may cause an unbootable system.", description: null }, { name: null, id: null, hidden: false }) : ``) + `
-                    ` + FnDisplayInlineAlert({ status: ($.isNumeric(pool.version) ? "danger" : "warning"), title: ($.isNumeric(pool.version) ? "The storage pool will no longer be accessible on software that does not support feature flags." : "Once a feature is enabled the pool may become incompatible with software that does not support the feature.") + " Features can not be disabled once they have been enabled.", description: null }, { name: "storagepool-configure-features-compatibility", id: pool.id, hidden: true }) + `
+                    ` + (pool.boot ? FnDisplayInlineAlert({ status: "danger", title: "Changes to the boot ZFS pool may cause an unbootable system.", description: null }, { name: null, id: null, hidden: false }) : ``) + `
+                    ` + FnDisplayInlineAlert({ status: ($.isNumeric(pool.version) ? "danger" : "warning"), title: ($.isNumeric(pool.version) ? "The ZFS pool will no longer be accessible on software that does not support feature flags." : "Once a feature is enabled the pool may become incompatible with software that does not support the feature.") + " Features can not be disabled once they have been enabled.", description: null }, { name: "storagepool-configure-features-compatibility", id: pool.id, hidden: true }) + `
                     <form class="ct-form ct-form-spacing">
                         <label class="control-label">Allocation Classes</label>
                         <div class="ct-form-split" role="group">
@@ -15162,10 +15162,10 @@ function FnModalStoragePoolDestroyContent(pool = { name, id, altroot: false }, m
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Destroy Storage Pool</h4>
+                    <h4 class="modal-title">Destroy ZFS pool</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-ct-bodytext-1">Are you sure you want to destroy storage pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
+                    <div class="modal-ct-bodytext-1">Are you sure you want to destroy ZFS pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
                     <form class="ct-form ct-form-spacing">
                         <label class="control-label">Options</label>
                         <div role="group">
@@ -15236,10 +15236,10 @@ function FnModalStoragePoolExportContent(pool = { name, id, altroot: false, read
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Export Storage Pool</h4>
+                    <h4 class="modal-title">Export ZFS pool</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-ct-bodytext-1">Are you sure you want to export storage pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
+                    <div class="modal-ct-bodytext-1">Are you sure you want to export ZFS pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
                     <form class="ct-form ct-form-spacing">
                         <label class="control-label">Options</label>
                         <div role="group">
@@ -15345,7 +15345,7 @@ function FnModalFileSystemsCreateContent(pool = { name, id, altroot: false, feat
                         </div>
                         <label id="controllabel-storagepool-filesystems-create-encryption-passphrase-` + pool.id + `" class="control-label hidden">Passphrase <a data-placement="right" data-toggle="tooltip" tabindex="-1" title="Alphanumerical characters are allowed with the addition of whitespaces and standard keyboard special characters @%+\\/'!#$^?:,(){}[]~\`-_.<br><br>Minimum of 8 characters required.<br><br>Passphrase is not required if parent file system is encrypted."><span class="fa fa-lg fa-info-circle"></span></a></label>
                         <div id="validationwrapper-storagepool-filesystems-create-encryption-passphrase-` + pool.id + `" class="ct-validation-wrapper hidden">
-                            ` + (!pool.feature.encryption ? FnDisplayInlineAlert({ status: "warning", title: "Encryption feature flag is not enabled on storage pool.", description: null }, { name: "storagepool-filesystems-create-encryption", id: pool.id, hidden: false }) : ``) + `
+                            ` + (!pool.feature.encryption ? FnDisplayInlineAlert({ status: "warning", title: "Encryption feature flag is not enabled on ZFS pool.", description: null }, { name: "storagepool-filesystems-create-encryption", id: pool.id, hidden: false }) : ``) + `
                             <input id="input-storagepool-filesystems-create-encryption-passphrase-` + pool.id + `" class="form-control privileged-modal" data-field="encryption-passphrase" data-field-type="text-input" tabindex="4" type="password" value="">
                             <span id="helpblock-storagepool-filesystems-create-encryption-passphrase-` + pool.id + `" class="help-block"></span>
                         </div>
@@ -15531,7 +15531,7 @@ function FnModalFileSystemsCreateContent(pool = { name, id, altroot: false, feat
                         </div>
                         <label class="control-label ` + ((!pool.feature.allocation_classes || $("#tr-storagepool-" + pool.id).attr("data-pool-special") === "false") ? `hidden` : ``) + `">Special Small Blocks</label>
                         <div class="ct-validation-wrapper ` + ((!pool.feature.allocation_classes || $("#tr-storagepool-" + pool.id).attr("data-pool-special") === "false") ? `hidden` : ``) + `">
-                            ` + FnDisplayInlineAlert({ status: "warning", title: "Allocation Classes feature flag is not enabled on storage pool.", description: null }, { name: "storagepool-filesystems-create-special_small_blocks", id: pool.id, hidden: true }) + `
+                            ` + FnDisplayInlineAlert({ status: "warning", title: "Allocation Classes feature flag is not enabled on ZFS pool.", description: null }, { name: "storagepool-filesystems-create-special_small_blocks", id: pool.id, hidden: true }) + `
                             <div id="div-storagepool-filesystems-create-special_small_blocks-dropdown-` + pool.id + `" class="btn-group bootstrap-select dropdown form-control privileged-modal">
                                 <button aria-expanded="false" class="btn btn-default dropdown-toggle" data-toggle="dropdown" tabIndex="19" type="button">
                                     <span id="btnspan-storagepool-filesystems-create-special_small_blocks-` + pool.id + `" class="pull-left" data-field-value="0">0 B</span>
@@ -16439,7 +16439,7 @@ function FnModalFileSystemConfigureContent(pool = { name, id, altroot: false, fe
                         <div id="validationwrapper-storagepool-filesystem-configure-mountpoint-` + filesystem.id + `" class="ct-validation-wrapper">
                             <input id="input-storagepool-filesystem-configure-mountpoint-` + filesystem.id + `" class="form-control privileged-modal" data-field="mountpoint" data-field-type="text-input" data-field-value="" tabindex="11" type="text" value="">
                             <span id="helpblock-storagepool-filesystem-configure-mountpoint-` + filesystem.id + `" class="help-block"></span>
-                            ` + (pool.altroot ? `<span id="helpblock-storagepool-filesystem-configure-mountpoint-altroot-` + filesystem.id + `" class="help-block">Alternative Root is enabled for storage pool.</span>` : ``) + `
+                            ` + (pool.altroot ? `<span id="helpblock-storagepool-filesystem-configure-mountpoint-altroot-` + filesystem.id + `" class="help-block">Alternative Root is enabled for ZFS pool.</span>` : ``) + `
                         </div>
                         <label class="control-label">NFS Share</label>
                         <div role="group">
@@ -19386,7 +19386,7 @@ function FnModalStatusDiskAttachContent(pool = { name, id, status: { config: { i
                                 </ul>
                             </div>
                         </div>
-                        <label class="control-label">Disks <a data-placement="right" data-toggle="tooltip" tabindex="-1" title="Drives with 4 KiB physical sector size may report/emulate 512 B for backwards compatibility.<br><br>Configure the storage pool sector size to 4 KiB or above to optimise disk operation"><span class="fa fa-lg fa-info-circle"></span></a></label>
+                        <label class="control-label">Disks <a data-placement="right" data-toggle="tooltip" tabindex="-1" title="Drives with 4 KiB physical sector size may report/emulate 512 B for backwards compatibility.<br><br>Configure the ZFS pool sector size to 4 KiB or above to optimise disk operation"><span class="fa fa-lg fa-info-circle"></span></a></label>
                         <div id="validationwrapper-storagepool-status-disk-attach-disks-` + pool.status.config.items.index + `-` + pool.id + `" class="ct-validation-wrapper" tabindex="-1">
                             <ul id="listgroup-storagepool-status-disk-attach-disks-` + pool.status.config.items.index + `-` + pool.id + `" class="list-group dialog-list-ct" data-field="disks" data-field-type="select-disks"></ul>
                             <span id="helpblock-storagepool-status-disk-attach-disks-identifierwarning-` + pool.status.config.items.index + `-` + pool.id + `" class="help-block"></span>
@@ -19781,7 +19781,7 @@ function FnModalStatusDiskOnlineContent(pool = { name, id, status: { config: { i
                             <label id="switch-storagepool-status-disk-online-expand-` + pool.status.config.items.index + `-` + pool.id + `" class="onoff-ct privileged-modal"><input tabIndex="1" type="checkbox"><span class="switch-toggle"></span></label><span>Expand the device to use all available space</span>
                         </div>
                         <div role="group">
-                            <label id="switch-storagepool-status-disk-online-scrub-` + pool.status.config.items.index + `-` + pool.id + `" class="onoff-ct privileged-modal"><input tabIndex="2" type="checkbox"><span class="switch-toggle"></span></label><span>Scrub the storage pool after disk is set online</span>
+                            <label id="switch-storagepool-status-disk-online-scrub-` + pool.status.config.items.index + `-` + pool.id + `" class="onoff-ct privileged-modal"><input tabIndex="2" type="checkbox"><span class="switch-toggle"></span></label><span>Scrub the ZFS pool after disk is set online</span>
                         </div>
                     </form>
                 </div>
@@ -19877,7 +19877,7 @@ function FnModalStatusDiskReplaceContent(pool = { name, id, status: { config: { 
                                 </ul>
                             </div>
                         </div>
-                        <label class="control-label">Disks <a data-placement="right" data-toggle="tooltip" tabindex="-1" title="Drives with 4 KiB physical sector size may report/emulate 512 B for backwards compatibility.<br><br>Configure the storage pool sector size to 4 KiB or above to optimise disk operation"><span class="fa fa-lg fa-info-circle"></span></a></label>
+                        <label class="control-label">Disks <a data-placement="right" data-toggle="tooltip" tabindex="-1" title="Drives with 4 KiB physical sector size may report/emulate 512 B for backwards compatibility.<br><br>Configure the ZFS pool sector size to 4 KiB or above to optimise disk operation"><span class="fa fa-lg fa-info-circle"></span></a></label>
                         <div id="validationwrapper-storagepool-status-disk-replace-disks-` + pool.status.config.items.index + `-` + pool.id + `" class="ct-validation-wrapper" tabindex="-1">
                             <ul id="listgroup-storagepool-status-disk-replace-disks-` + pool.status.config.items.index + `-` + pool.id + `" class="list-group dialog-list-ct" data-field="disks" data-field-type="select-disks"></ul>
                             <span id="helpblock-storagepool-status-disk-replace-disks-identifierwarning-` + pool.status.config.items.index + `-` + pool.id + `" class="help-block"></span>
@@ -20123,10 +20123,10 @@ function FnModalStatusStoragePoolClearContent(pool = { name, id, status: { confi
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Clear Storage Pool Errors</h4>
+                    <h4 class="modal-title">Clear ZFS pool errors</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-ct-bodytext-2">Are you sure you want to clear errors for storage pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
+                    <div class="modal-ct-bodytext-2">Are you sure you want to clear errors for ZFS pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
                 </div>
                 <div class="modal-footer">
                     <div></div>
@@ -20186,10 +20186,10 @@ function FnModalStatusStoragePoolRegenerateGuidContent(pool = { name, id, guid, 
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Regenerate Storage Pool GUID</h4>
+                    <h4 class="modal-title">Regenerate ZFS pool GUID</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-ct-bodytext-1">Are you sure you want to regenerate the GUID for storage pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
+                    <div class="modal-ct-bodytext-1">Are you sure you want to regenerate the GUID for ZFS pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
                     <div class="modal-ct-bodytext-2">GUID: ` + pool.guid + `</div>
                 </div>
                 <div class="modal-footer">
@@ -20250,10 +20250,10 @@ function FnModalStatusStoragePoolResilverContent(pool = { name, id, status: { co
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Resilver Storage Pool</h4>
+                    <h4 class="modal-title">Resilver ZFS pool</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-ct-bodytext-1">Are you sure you want to start resilver for storage pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
+                    <div class="modal-ct-bodytext-1">Are you sure you want to start resilver for ZFS pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
                     ` + (pool.status.resilver.started ? FnDisplayInlineAlert({ status: "warning", title: "A resilver is currently in progress and will be restarted.", description: null }, { name: null, id: null, hidden: false }) : ``) + `
                     <div class="modal-ct-bodytext-1"></div>
                 </div>
@@ -20315,11 +20315,11 @@ function FnModalStatusStoragePoolTrimStartContent(pool = { name, id, autotrim: f
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">TRIM Storage Pool</h4>
+                    <h4 class="modal-title">TRIM ZFS pool</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-ct-bodytext-1">Are you sure you want to start TRIM for storage pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
-                    ` + (pool.autotrim ? FnDisplayInlineAlert({ status: "info", title: "Automatic TRIM is currently enabled for this storage pool.", description: null }, { name: null, id: null, hidden: false }) : ``) + `
+                    <div class="modal-ct-bodytext-1">Are you sure you want to start TRIM for ZFS pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
+                    ` + (pool.autotrim ? FnDisplayInlineAlert({ status: "info", title: "Automatic TRIM is currently enabled for this ZFS pool.", description: null }, { name: null, id: null, hidden: false }) : ``) + `
                     <form class="ct-form ct-form-spacing">
                         <label class="control-label">Options</label>
                         <div role="group">
@@ -20389,12 +20389,12 @@ function FnModalStatusStoragePoolUpgradeContent(pool = { name, id, status: { con
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Upgrade Storage Pool</h4>
+                    <h4 class="modal-title">Upgrade ZFS pool</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-ct-bodytext-1">Are you sure you want to upgrade storage pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
+                    <div class="modal-ct-bodytext-1">Are you sure you want to upgrade ZFS pool: <strong class="modal-ct-name">` + pool.name + `</strong>?</div>
                     ` + ($.isNumeric(pool.version) ? `<div class="modal-ct-bodytext-1">Legacy Version: ` + pool.version + `</div>` : ``) + `
-                    ` + FnDisplayInlineAlert({ status: ($.isNumeric(pool.version) ? "danger" : "warning"), title: ($.isNumeric(pool.version) ? "The storage pool will no longer be accessible on software that does not support feature flags." : "Once a feature is enabled the pool may become incompatible with software that does not support the feature."), description: null }, { name: null, id: null, hidden: false }) + `
+                    ` + FnDisplayInlineAlert({ status: ($.isNumeric(pool.version) ? "danger" : "warning"), title: ($.isNumeric(pool.version) ? "The ZFS pool will no longer be accessible on software that does not support feature flags." : "Once a feature is enabled the pool may become incompatible with software that does not support the feature."), description: null }, { name: null, id: null, hidden: false }) + `
                     <div id="panelgroup-storagepool-status-upgrade-features-` + pool.status.config.items.index + `-` + pool.id + `" class="panel-group modal-ct-bodytext-1">
                         <div id="panel-storagepool-status-upgrade-features-` + pool.status.config.items.index + `-` + pool.id + `" class="panel panel-default">
                             <div class="panel-heading">
@@ -20525,7 +20525,7 @@ function FnModalStatusVirtualDeviceAddContent(pool = { name, id, feature: { allo
                                 </ul>
                             </div>
                         </div>
-                        <label class="control-label">Disks <a data-placement="right" data-toggle="tooltip" tabindex="-1" title="Drives with 4 KiB physical sector size may report/emulate 512 B for backwards compatibility.<br><br>Configure the storage pool sector size to 4 KiB or above to optimise disk operation"><span class="fa fa-lg fa-info-circle"></span></a></label>
+                        <label class="control-label">Disks <a data-placement="right" data-toggle="tooltip" tabindex="-1" title="Drives with 4 KiB physical sector size may report/emulate 512 B for backwards compatibility.<br><br>Configure the ZFS pool sector size to 4 KiB or above to optimise disk operation"><span class="fa fa-lg fa-info-circle"></span></a></label>
                         <div id="validationwrapper-storagepool-status-virtualdevice-add-disks-` + pool.status.config.items.index + `-` + pool.id + `" class="ct-validation-wrapper" tabindex="-1">
                             <ul id="listgroup-storagepool-status-virtualdevice-add-disks-` + pool.status.config.items.index + `-` + pool.id + `" class="list-group dialog-list-ct" data-field="disks" data-field-type="select-disks"></ul>
                             <span id="helpblock-storagepool-status-virtualdevice-add-disks-identifierwarning-` + pool.status.config.items.index + `-` + pool.id + `" class="help-block"></span>
