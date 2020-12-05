@@ -1,12 +1,8 @@
-# Cockpit ZFS Manager
-
-[![GitHub Tag](https://img.shields.io/github/v/release/optimans/cockpit-zfs-manager?include_prereleases&style=flat-square&color=brightgreen)](https://github.com/optimans/cockpit-zfs-manager/releases)
-
-**An interactive ZFS on Linux admin package for Cockpit.**
+# ZFS manager
 
 ### WARNING!
 
-Cockpit ZFS Manager is currently pre-release software. Use at your own risk!
+ZFS manager is currently pre-release software. Use at your own risk!
 
 ## Requirements
 
@@ -76,11 +72,11 @@ If using SELinux in enforcing mode, it is recommended to enable the boolean stat
 $ sudo setsebool -P samba_export_all_ro=1 samba_export_all_rw=1
 ```
 
-## Using Cockpit ZFS Manager
+## Using ZFS Manager
 
-Login to Cockpit as a privileged user and click ZFS from the navigation list.
+Login as a privileged user and click ZFS from the navigation list.
 
-A Welcome to Cockpit ZFS Manager modal will display and allow you to configure initial settings.
+A Welcome to ZFS manager modal will display and allow you to configure initial settings.
 
 Note: Inline help is currently available in modals. Documentation will be created at a later date.
 
@@ -119,7 +115,7 @@ If SELinux contexts for Samba is selected, the following properties are set:
 
 #### Samba
 
-ZFS always creates shares in /var/lib/samba/usershares folder when ShareSMB property is enabled. This is also the case even if Cockpit ZFS Manager is managing the shares. To avoid duplicate shares of the same file system, it is recommended to configure a different usershares folder path if required or to disable usershares in the Samba configuration file.
+ZFS always creates shares in /var/lib/samba/usershares folder when ShareSMB property is enabled. This is also the case even if ZFS manager is managing the shares. To avoid duplicate shares of the same file system, it is recommended to configure a different usershares folder path if required or to disable usershares in the Samba configuration file.
 
 Note: Newer versions of Samba may require the usershares folder to be set to a new path instead of [disabled in configuration](https://github.com/optimans/cockpit-zfs-manager/issues/12):
 
@@ -134,7 +130,7 @@ Append/Change to [global] section
 usershare path = /var/lib/samba/usershares2
 ```
 
-If enabled, Cockpit ZFS Manager manages shares for the file systems only. Samba global configuration will need to be configured externally.
+If enabled, ZFS manager manages shares for the file systems only. Samba global configuration will need to be configured externally.
 
 ## More Information
 
